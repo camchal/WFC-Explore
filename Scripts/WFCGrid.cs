@@ -1,5 +1,5 @@
-﻿namespace hamsterbyte.WFC{
-    using System.Diagnostics;
+namespace hamsterbyte.WFC{
+	using System.Diagnostics;
 
 
 }

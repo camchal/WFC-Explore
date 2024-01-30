@@ -1,6 +1,6 @@
-﻿namespace hamsterbyte.WFC{
-    using System;
-    using System.Linq;
+namespace hamsterbyte.WFC{
+	using System;
+	using System.Linq;
 
-    
+	
 }
