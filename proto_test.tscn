@@ -9,5 +9,5 @@ format = 2
 script = ExtResource("2_b56ob")
 width = 35
 height = 35
-rulePath = "res://proto_rules.json"
+rulePath = "res://rules/proto/proto_rules.json"
 wrap = true
