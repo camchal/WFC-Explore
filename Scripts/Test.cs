@@ -4,17 +4,18 @@ using System.Threading.Tasks;
 using hamsterbyte.WFC;
 
 public partial class Test : TileMap{
-	private WFCGrid grid;
-	[Export] private int width = 50;
-	[Export] private int height = 50;
+	private RegionManager regionManager;
+    [Export] private int regionWidth = 50;
+    [Export] private int regionHeight = 50;
 	[Export(PropertyHint.File)] private string rulePath;
 	[Export] private bool wrap;
 	private TileSetAtlasSource source;
 
 	public override void _Ready(){
 		WFCGrid.onComplete += OnGenerationComplete;
+		regionManager = new RegionManager();
 		List<WFCRule> rules = WFCRule.FromJSONFile(ProjectSettings.GlobalizePath(rulePath));
-		grid = new WFCGrid(width, height, rules);
+		regionManager.AddRegion(regionWidth, regionHeight, rules);
 	}
 
 	public override void _Process(double delta){
@@ -29,9 +30,9 @@ public partial class Test : TileMap{
 	}
 
 	private void GenerateGrid(){
-		if (grid.Busy) return;
-		ClearTilemap();
-		grid.TryCollapse(wrap);
+		if (regionManager.IsAnyRegionBusy()) return;
+        ClearTilemap();
+        regionManager.GetRegion(0).Collapse(wrap);
 	}
 
 	private async Task StartPopulatingTilemap(WFCGrid _grid){
@@ -49,12 +50,13 @@ public partial class Test : TileMap{
 		return true;
 	}
 
-	private void SetNextCell(Vector2I c){
-		EraseCell(0, c);
-		if (grid[c.X, c.Y].TileIndex == -1) return;
-		SetCell(0, c, 0,
-			source.GetTileId(grid[c.X, c.Y].TileIndex));
-	}
+	  private void SetNextCell(Vector2I c) {
+        EraseCell(0, c);
+    WFCGrid grid = regionManager.GetRegion(0).GetGrid(); // Assuming GetGrid() method in WFCRegion
+    int tileIndex = grid[c.X, c.Y].TileIndex;
+    if (tileIndex == -1) return; // Assuming -1 indicates no tile
+    SetCell(0, c, 0, source.GetTileId(tileIndex));
+    }
 
 	private void ClearTilemap(){
 		foreach (Vector2I v in GetUsedCells(0)){
