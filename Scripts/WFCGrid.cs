@@ -1,6 +1,7 @@
  namespace hamsterbyte.WFC{
 	using System.Diagnostics;
 	using System.Globalization;
+	using System.Reflection.Metadata;
 	using System.Runtime.Serialization;
 
 
@@ -12,7 +13,6 @@
 			}
 			return EntropyCoordinates.Invalid;
 		}
-		
 		private void Collapse(Coordinates _coords){
 			int collapsedIndex = cells[_coords.X, _coords.Y].Collapse();
 			AnimationCoordinates.Enqueue(_coords);
@@ -55,6 +55,13 @@
 			}
 		}
 		
+		public void updateCellCoordinates(Offset regionOffset){
+			for(int x = 0; x < width; x++){
+				for(int y = 0 ; y < height; y++){
+				cells[x, y].UpdateCoordinates(regionOffset.X, regionOffset.Y);
+				}
+			}
+		}
 		public void TryCollapse(bool _wrap = true, int _maxAttempts = 100){
 				Reset(true);
 				Busy = true;
@@ -85,6 +92,7 @@
 					ElapsedMilliseconds = timer.ElapsedMilliseconds
 				};
 				onComplete?.Invoke(result);
+
 				Busy = false;
 		}
 	}

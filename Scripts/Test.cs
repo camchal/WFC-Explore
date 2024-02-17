@@ -15,8 +15,9 @@ public partial class Test : TileMap{
 
 	public override void _Ready(){
 		WFCGrid.onComplete += OnGenerationComplete;
-		regionManager = new RegionManager();
+		regionManager = new RegionManager(regionWidth, regionHeight);
 		List<WFCRule> rules = WFCRule.FromJSONFile(ProjectSettings.GlobalizePath(rulePath));
+		regionManager.AddRegion(regionWidth, regionHeight, rules);
 		regionManager.AddRegion(regionWidth, regionHeight, rules);
 		
 	}
@@ -41,7 +42,9 @@ public partial class Test : TileMap{
 
 	private async Task StartPopulatingTilemap(WFCGrid _grid){
 		source = TileSet.GetSource(0) as TileSetAtlasSource;
+		GD.Print("Before PopulateTilemapAsync");
 		bool complete = await Task.Run(() => PopulateTilemapAsync(_grid));
+		GD.Print("After PopulateTilemapAsync");
 		GD.Print(complete);
 	}
 

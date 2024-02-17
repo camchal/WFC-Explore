@@ -15,6 +15,9 @@ namespace hamsterbyte.WFC{
 				sumOfPossibleFrequencyLogFrequencies += Math.Log2(sumOfRawFrequencies) * Math.Log2(rawFrequencies[i]);
 			}
 		}
+		public void UpdateCoordinates(int offsetX, int offsetY){
+		Coordinates = new Coordinates(Coordinates.X + offsetX, Coordinates.Y + offsetY);
+		}
 
 		public void RemoveOption(int i){
 			Options[i] = false;
