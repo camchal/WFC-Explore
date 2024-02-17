@@ -7,6 +7,7 @@
 tile_set = ExtResource("1_txvwg")
 format = 2
 script = ExtResource("2_b56ob")
-width = 25
 rulePath = "res://proto_rules.json"
 wrap = true
+metadata/mapWidth = 0
+metadata/mapHeight = 0

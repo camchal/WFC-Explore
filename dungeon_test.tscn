@@ -7,7 +7,5 @@
 tile_set = ExtResource("1_1lmny")
 format = 2
 script = ExtResource("2_8yda5")
-width = 25
-height = 25
 rulePath = "res://dungeonRules.json"
 wrap = true
