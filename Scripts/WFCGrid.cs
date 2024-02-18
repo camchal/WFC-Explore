@@ -57,11 +57,15 @@
 		}
 		
 		public void updateCellCoordinates(Offset regionOffset){
+			GD.Print($"Updating Region {parentRegion.regionNumber}'s cells");
 			for(int x = 0; x < width; x++){
 				for(int y = 0 ; y < height; y++){
 				cells[x, y].UpdateCoordinates(regionOffset.X, regionOffset.Y);
 				}
 			}
+		}
+		public WFCCell[,] getCellCoordinates(){
+			return cells;
 		}
 		public void TryCollapse(bool _wrap = true, int _maxAttempts = 100){
 				Reset(true);

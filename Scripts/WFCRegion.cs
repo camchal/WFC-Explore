@@ -14,7 +14,7 @@ public class WFCRegion {
      public WFCRegion(int width, int height, List<WFCRule> rules, Offset regionOffset, int passedRegionNum) {
         grid = new WFCGrid(width, height, rules, this);
         regionNumber = passedRegionNum; 
-        if(regionOffset.X != 0 && regionOffset.Y !=0){
+        if(regionOffset.X != 0 || regionOffset.Y !=0){
             //if not zero then a cell has been added
             grid.updateCellCoordinates(regionOffset);
         }
