@@ -60,7 +60,7 @@ public class RegionManager {
 	private void OnRegionComplete(WFCResult result, int regionNumber)
 	{
 		GD.Print("now inside regionmanager.cs");
-        GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
+		GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
 		GD.Print($"Region number: {regionNumber}, Region Results count: {regionResults.Count}");
 
 		regionResults[regionNumber] = result; //<--- somehow the problem for out of bounds, once done handle animation
@@ -98,19 +98,19 @@ public class RegionManager {
 	}
 	//INIT Results list of useless results that will be replaced
 	public void InitializeRegionResults()
-    {
-        for (int i = 0; i < regions.Count; i++)
-        {
-            regionCompletionStatus.Add(false);
-            regionResults.Add(new WFCResult()
-            {
-                Grid = null, // Placeholder value
-                Success = false, // Placeholder value
-                Attempts = 0, // Placeholder value
-                ElapsedMilliseconds = 0 // Placeholder value
-            });
-        }
-    }
+	{
+		for (int i = 0; i < regions.Count; i++)
+		{
+			regionCompletionStatus.Add(false);
+			regionResults.Add(new WFCResult()
+			{
+				Grid = null, // Placeholder value
+				Success = false, // Placeholder value
+				Attempts = 0, // Placeholder value
+				ElapsedMilliseconds = 0 // Placeholder value
+			});
+		}
+	}
 	
    
    public void CollapseRegions(bool wrap)
@@ -147,12 +147,12 @@ public class RegionManager {
 		}
 		public void LogRegionManagerState()
 {
-    GD.Print("RegionManager State:");
-    for (int i = 0; i < regions.Count; i++)
-    {
-        GD.Print($"Region {i}:");
-        GD.Print($"  Completion Status: {regionCompletionStatus[i]}");
-        GD.Print($"  Result: {regionResults[i].Grid}, Success: {regionResults[i].Success}, Attempts: {regionResults[i].Attempts}, ElapsedMilliseconds: {regionResults[i].ElapsedMilliseconds}");
-    }
+	GD.Print("RegionManager State:");
+	for (int i = 0; i < regions.Count; i++)
+	{
+		GD.Print($"Region {i}:");
+		GD.Print($"  Completion Status: {regionCompletionStatus[i]}");
+		GD.Print($"  Result: {regionResults[i].Grid}, Success: {regionResults[i].Success}, Attempts: {regionResults[i].Attempts}, ElapsedMilliseconds: {regionResults[i].ElapsedMilliseconds}");
+	}
 }
 }

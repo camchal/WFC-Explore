@@ -1,8 +1,8 @@
  namespace hamsterbyte.WFC{
 	using System.Diagnostics;
 	using System.Globalization;
-    using System.Net.Sockets;
-    using System.Reflection.Metadata;
+	using System.Net.Sockets;
+	using System.Reflection.Metadata;
 	using System.Runtime.Serialization;
 	using Godot;
 
