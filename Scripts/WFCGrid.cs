@@ -94,7 +94,7 @@
 					ElapsedMilliseconds = timer.ElapsedMilliseconds
 				};
 				GD.Print($"region {parentRegion.regionNumber} got to the end");
-				GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
+				//GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
 
 				// need to modify this
 				parentRegion.ChildGridCompleted(result);

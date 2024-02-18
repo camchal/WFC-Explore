@@ -14,7 +14,7 @@ public class RegionManager {
 	private Offset regionOffsetConst;
 	private int numRegions;
 	private int regionNumber;
-	private List<WFCResult> regionResults;
+	private WFCResult[] regionResults;
 	private int completedRegions;
 	
 	public List<WFCRegion> GetRegionList(){
@@ -31,9 +31,22 @@ public class RegionManager {
 		//INIT LISTS
 		regionCompletionStatus = new List<bool>();
 		regions = new List<WFCRegion>();
-		regionResults = new List<WFCResult>();
-		for (int i = 0; i < regions.Count; i++) regionCompletionStatus.Add(false);
-		InitializeRegionResults();
+		regionResults = new WFCResult[_numRegions];
+		for (int i = 0; i < _numRegions; i++)
+		{
+			regionCompletionStatus.Add(false);
+			WFCResult dummyResult =(new WFCResult()
+			{
+				
+				Grid = new WFCGrid(0,0,new List<WFCRule>(), new WFCRegion(0,0,new List<WFCRule>(),new Offset(0,0),0)), // Placeholder value
+				Success = false, // Placeholder value
+				Attempts = 0, // Placeholder value
+				ElapsedMilliseconds = 0 // Placeholder value
+			});
+			regionResults[i] = dummyResult;
+			GD.Print("Im initializing WFCResults list");
+		}
+		GD.Print("in constructor!");
 			
 		completedRegions = 0;
 		numRegions = _numRegions;
@@ -59,17 +72,17 @@ public class RegionManager {
 
 	private void OnRegionComplete(WFCResult result, int regionNumber)
 	{
-		GD.Print("now inside regionmanager.cs");
-		GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
-		GD.Print($"Region number: {regionNumber}, Region Results count: {regionResults.Count}");
+		//GD.Print("now inside regionmanager.cs");
+		//GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
+		//GD.Print($"Region number: {regionNumber}, Region Results length: {regionResults.Length}");
 
 		regionResults[regionNumber] = result; //<--- somehow the problem for out of bounds, once done handle animation
-		GD.Print("successfully replaced region result");
+		GD.Print($"successfully replaced region result for region {regionNumber}");
 		regionCompletionStatus[regionNumber] = true; // Mark region as complete
-		LogRegionManagerState();
+		//LogRegionManagerState();
 		//failing somewhere around here, but it seems like 
 
-		GD.Print($"region {regionNumber} called on Region COmplete");
+		//GD.Print($"region {regionNumber} called on Region COmplete");
 
 		if (regionCompletionStatus.All(status => status))
 		{
@@ -83,7 +96,7 @@ public class RegionManager {
 		 //need to place the invoke on region complete on the end of the grid i believe
 		 //if (!result.Success) return;
 		 // StartPopulatingTilemap(result.Grid);
-		 GD.Print("All regions completed!");
+		 //GD.Print("All regions completed!");
 	}
 
 	public WFCRegion GetRegion(int index) {
@@ -101,14 +114,16 @@ public class RegionManager {
 	{
 		for (int i = 0; i < regions.Count; i++)
 		{
-			regionCompletionStatus.Add(false);
-			regionResults.Add(new WFCResult()
+			WFCResult dummyResult =(new WFCResult()
 			{
+				
 				Grid = null, // Placeholder value
 				Success = false, // Placeholder value
 				Attempts = 0, // Placeholder value
 				ElapsedMilliseconds = 0 // Placeholder value
 			});
+			regionResults[i] = dummyResult;
+			GD.Print("Im initializing WFCResults list");
 		}
 	}
 	
@@ -119,7 +134,7 @@ public class RegionManager {
 		foreach (WFCRegion region in regions)
 		{
 			if(region.regionNumber > 0){
-				GD.Print($"Region {region.regionNumber}: First region succeeded and now I'm starting the second!");
+				//GD.Print($"Region {region.regionNumber}: First region succeeded and now I'm starting the second!");
 
 			}
 			region.Collapse(wrap);
@@ -128,7 +143,7 @@ public class RegionManager {
 
 	private void OnRegionCollapseComplete(WFCResult result, Coordinates animationCoords)
 		{
-			regionResults.Add(result);
+			//regionResults[].Add(result);
 			completedRegions++;
 
 			if (completedRegions == regions.Count)
@@ -141,7 +156,7 @@ public class RegionManager {
 				}
 
 				// Reset for next use
-				regionResults.Clear();
+				//regionResults.Clear();
 				completedRegions = 0;
 			}
 		}
