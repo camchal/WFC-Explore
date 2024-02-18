@@ -60,7 +60,7 @@
 			GD.Print($"Updating Region {parentRegion.regionNumber}'s cells");
 			for(int x = 0; x < width; x++){
 				for(int y = 0 ; y < height; y++){
-				cells[x, y].UpdateCoordinates(regionOffset.X, regionOffset.Y);
+				cells[x, y].UpdateCoordinates(regionOffset.X, regionOffset.Y, parentRegion.regionNumber);
 				}
 			}
 		}
@@ -68,8 +68,14 @@
 			return cells;
 		}
 		public void TryCollapse(bool _wrap = true, int _maxAttempts = 100){
+				// WFCCell [,] cellCoord = getCellCoordinates();
+				// WFCCell testCell = cellCoord[0,0];
+				// GD.Print($"region {parentRegion.regionNumber}'s first cell is ({testCell.Coordinates.X + ", " + testCell.Coordinates.Y})");
 				Reset(true);
+				parentRegion.InitCellCoordinates(parentRegion.regionNumber);//reinitalize the cell coords according to region
 				Busy = true;
+				// testCell = cellCoord[0,0];
+				// GD.Print($"region {parentRegion.regionNumber}'s first cell is ({testCell.Coordinates.X + ", " + testCell.Coordinates.Y})");
 				Stopwatch timer = Stopwatch.StartNew();
 				for(int i  = 0; i < _maxAttempts; i++){
 					currentAttempt++;
@@ -98,6 +104,10 @@
 					ElapsedMilliseconds = timer.ElapsedMilliseconds
 				};
 				GD.Print($"region {parentRegion.regionNumber} got to the end");
+				// WFCCell [,] cellCoord = getCellCoordinates();
+				// WFCCell testCell = cellCoord[0,0];
+				// GD.Print($"region {parentRegion.regionNumber}'s first cell is ({testCell.Coordinates.X + ", " + testCell.Coordinates.Y})");
+				
 				//GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
 
 				// need to modify this

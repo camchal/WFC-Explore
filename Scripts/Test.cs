@@ -96,8 +96,10 @@ public partial class Test : TileMap{
 	}
 
 	private void ClearTilemap(){
+		//regionManager.VisualizeRegionCoordinates();
 		foreach (Vector2I v in GetUsedCells(0)){
 			EraseCell(0, v);
 		}
+		//regionManager.ResetRegionCellCoordinates();
 	}
 }

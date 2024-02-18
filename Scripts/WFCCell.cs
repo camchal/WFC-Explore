@@ -2,8 +2,9 @@ namespace hamsterbyte.WFC{
 	using System;
 	using System.Linq;
 	using System.Runtime.InteropServices;
+    using Godot;
 
-	public partial class WFCCell{
+    public partial class WFCCell{
 		private void PrecalculateFrequencies(){
 			for( int i = 0; i< rawFrequencies.Length; i++){
 				logFrequencies[i] = Math.Log2(rawFrequencies[i]);
@@ -15,8 +16,10 @@ namespace hamsterbyte.WFC{
 				sumOfPossibleFrequencyLogFrequencies += Math.Log2(sumOfRawFrequencies) * Math.Log2(rawFrequencies[i]);
 			}
 		}
-		public void UpdateCoordinates(int offsetX, int offsetY){
+		public void UpdateCoordinates(int offsetX, int offsetY, int _regionNumber){
+		GD.Print($"region {_regionNumber}: cell updated from ({Coordinates.X + ", " + Coordinates.Y}) to ---> ({(Coordinates.X + offsetX) + ", " + (Coordinates.Y + offsetY)})");	
 		Coordinates = new Coordinates(Coordinates.X + offsetX, Coordinates.Y + offsetY);
+	
 		}
 
 		public void RemoveOption(int i){

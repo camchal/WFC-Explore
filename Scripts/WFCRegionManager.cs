@@ -48,6 +48,7 @@ public class RegionManager {
 	}
 
 	public void AddRegion(int width, int height, List<WFCRule> rules, bool suppressNotifications = false) {
+
 		WFCRegion newRegion = new WFCRegion(width, height, rules, regionOffset, regionNumber);
 		//GD.Print($"Region number {regionNumber} had an offset of {regionOffset.X}"); 
 		regions.Add(newRegion);
@@ -136,7 +137,18 @@ public class RegionManager {
 			region.Collapse(wrap);
 		}
 	}
+	public void ResetRegionCellCoordinates()
+{
+    foreach (WFCRegion region in regions)
+    {
+        region.InitCellCoordinates(region.regionNumber);
+    }
+}
 
+
+/// <summary>
+/// DEBUG FUNCTIONS
+/// </summary>
 			public void LogRegionManagerState()
 	{
 		GD.Print("RegionManager State:");

@@ -10,15 +10,24 @@ public class WFCRegion {
     public event Action<WFCResult,int> onRegionComplete; // Define the onComplete event
 
     public int regionNumber;
+    public Offset regionOffsetConst;
 
-     public WFCRegion(int width, int height, List<WFCRule> rules, Offset regionOffset, int passedRegionNum) {
+     public WFCRegion(int width, int height, List<WFCRule> rules, Offset _regionOffset, int passedRegionNum) {
         grid = new WFCGrid(width, height, rules, this);
+        regionOffsetConst = _regionOffset;
         regionNumber = passedRegionNum; 
-        if(regionOffset.X != 0 || regionOffset.Y !=0){
+        if(regionOffsetConst.X != 0 || regionOffsetConst.Y !=0){
             //if not zero then a cell has been added
-            grid.updateCellCoordinates(regionOffset);
+            grid.updateCellCoordinates(regionOffsetConst);//this is kinda messy, should clean up, currently a different
+            //method for first cell update, then a new one each time spacebaris pressed
         }
         
+    }
+    public void InitCellCoordinates(int _regionNumber){
+        Offset updateRegionOffset;
+        updateRegionOffset.X = (_regionNumber * regionOffsetConst.X);
+        updateRegionOffset.Y = (_regionNumber * regionOffsetConst.Y);
+        grid.updateCellCoordinates(updateRegionOffset);
     }
 
     public void ChildGridCompleted(WFCResult _result){
