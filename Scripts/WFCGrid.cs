@@ -1,9 +1,10 @@
  namespace hamsterbyte.WFC{
 	using System.Diagnostics;
 	using System.Globalization;
-	using System.Reflection.Metadata;
+    using System.Net.Sockets;
+    using System.Reflection.Metadata;
 	using System.Runtime.Serialization;
-
+	using Godot;
 
 	public partial class WFCGrid{
 		private EntropyCoordinates Observe(){
@@ -68,6 +69,7 @@
 				Stopwatch timer = Stopwatch.StartNew();
 				for(int i  = 0; i < _maxAttempts; i++){
 					currentAttempt++;
+					GD.Print($"region {parentRegion.regionNumber} is trying a new attempt");
 					WFCCell cell = cells.Random();
 					entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = cell.Coordinates,
@@ -91,7 +93,11 @@
 					Attempts = currentAttempt,
 					ElapsedMilliseconds = timer.ElapsedMilliseconds
 				};
-				onComplete?.Invoke(result);
+				GD.Print($"region {parentRegion.regionNumber} got to the end");
+				GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
+
+				// need to modify this
+				parentRegion.ChildGridCompleted(result);
 
 				Busy = false;
 		}

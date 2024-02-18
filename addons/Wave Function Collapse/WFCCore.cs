@@ -1,4 +1,4 @@
-/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+﻿/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 |||||||||||||||||||||||||||||||||||||||||||||| MIT LICENSE ||||||||||||||||||||||||||||||||||||||||||||||||||||
 Copyright 2023 hamsterbyte
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -98,6 +98,10 @@ namespace hamsterbyte.WFC{
 		public readonly Queue<Coordinates> AnimationCoordinates = new();
 
 		private int currentAttempt;
+		
+		private WFCRegion parentRegion;
+		public event Action<WFCResult, int> onRegionComplete;
+
 		private WFCCell[,] cells;
 		private int remainingUncollapsedCells;
 		private bool validCollapse = true;
@@ -162,9 +166,12 @@ namespace hamsterbyte.WFC{
 		/// <param name="_width">Width of the WFCGrid in cells</param>
 		/// <param name="_height">Height of the WFCGrid in cells</param>
 		/// <param name="_rules">Array of WFCRule. Loaded from JSON</param>
+		/// <param name="_regionNumber">number of the region the grid belongs to</param>
 		/// <param name="_suppressNotifications">Suppress GD.Print messages from this class. Set false for debugging</param>
-		public WFCGrid(int _width, int _height, List<WFCRule> _rules, bool _suppressNotifications = false){
+		public WFCGrid(int _width, int _height, List<WFCRule> _rules,WFCRegion _parentRegion, bool _suppressNotifications = false){
 			onComplete += NotifyComplete;
+	
+			parentRegion = _parentRegion;
 			suppressNotifications = _suppressNotifications;
 			cells = new WFCCell[_width, _height];
 			remainingUncollapsedCells = cells.Length;
