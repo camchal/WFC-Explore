@@ -139,10 +139,10 @@ public class RegionManager {
 	}
 	public void ResetRegionCellCoordinates()
 {
-    foreach (WFCRegion region in regions)
-    {
-        region.InitCellCoordinates(region.regionNumber);
-    }
+	foreach (WFCRegion region in regions)
+	{
+		region.InitCellCoordinates(region.regionNumber);
+	}
 }
 
 

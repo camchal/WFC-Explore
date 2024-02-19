@@ -2,9 +2,9 @@ namespace hamsterbyte.WFC{
 	using System;
 	using System.Linq;
 	using System.Runtime.InteropServices;
-    using Godot;
+	using Godot;
 
-    public partial class WFCCell{
+	public partial class WFCCell{
 		private void PrecalculateFrequencies(){
 			for( int i = 0; i< rawFrequencies.Length; i++){
 				logFrequencies[i] = Math.Log2(rawFrequencies[i]);

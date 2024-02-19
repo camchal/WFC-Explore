@@ -1,19 +1,36 @@
  namespace hamsterbyte.WFC{
+	using System;
 	using System.Diagnostics;
 	using System.Globalization;
 	using System.Net.Sockets;
 	using System.Reflection.Metadata;
 	using System.Runtime.Serialization;
 	using Godot;
+	
 
 	public partial class WFCGrid{
 		private EntropyCoordinates Observe(){
+			int testRegion = parentRegion.regionNumber;
+			if(testRegion == 1 ){
+				//stop here
+			}
 			while(!entropyHeap.IsEmpty){
 				EntropyCoordinates coords = entropyHeap.Pop();
-				if(!cells[coords.Coordinates.X, coords.Coordinates.Y].Collapsed) return coords;
+				WFCCell [,] testCells = cells;
+				GD.Print($"cell at 16,2 is collapsed :{cells[0,0].Collapsed}");
+				GD.Print($"ent coords x:{coords.Coordinates.X}");
+				GD.Print($"ent coords y:{coords.Coordinates.Y}");
+				GD.Print($"Observing  entropy coordinates: ({coords.Coordinates.X}, {coords.Coordinates.Y}) with entropy {coords.Entropy}");
+				//for cameron coming back, for some reason the entropy coordiantes arent falling with the cell coordinates,
+				// need to look how entropy coords are generated, and if i need to update the entropy coordinates with the normal cell coordinates
+				//GD.Print($"Observing test cell coordinates: ({testCells[coords.Coordinates.X,coords.Coordinates.Y].Coordinates.X}, {testCells[coords.Coordinates.X,coords.Coordinates.Y].Coordinates.Y}) ");
+				//GD.Print($"Observing coordinates: ({coords.Coordinates.X}, {coords.Coordinates.Y}) with entropy {coords.Entropy} and cells.collapsed is {cells[coords.Coordinates.X ,coords.Coordinates.Y].Collapsed}");
+				if(!cells[coords.Coordinates.X, coords.Coordinates.Y].Collapsed){ 
+					return coords;}
 			}
 			return EntropyCoordinates.Invalid;
 		}
+		
 		private void Collapse(Coordinates _coords){
 			int collapsedIndex = cells[_coords.X, _coords.Y].Collapse();
 			AnimationCoordinates.Enqueue(_coords);

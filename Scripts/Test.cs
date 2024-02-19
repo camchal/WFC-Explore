@@ -62,29 +62,29 @@ public partial class Test : TileMap{
 	// }
 	private async Task StartPopulatingTilemap(List<WFCRegion> regions)
 {
-    source = TileSet.GetSource(0) as TileSetAtlasSource;
-    GD.Print("Before PopulateTilemapAsync");
+	source = TileSet.GetSource(0) as TileSetAtlasSource;
+	GD.Print("Before PopulateTilemapAsync");
 
-    Queue<Coordinates> allAnimationCoordinates = new Queue<Coordinates>();
+	Queue<Coordinates> allAnimationCoordinates = new Queue<Coordinates>();
 
-    // Collect animation coordinates from all regions
-    foreach (var region in regions)
-    {
-        WFCGrid grid = region.GetGrid();
-        while (grid.AnimationCoordinates.Count > 0)
-        {
-            allAnimationCoordinates.Enqueue(grid.AnimationCoordinates.Dequeue());
-        }
-    }
+	// Collect animation coordinates from all regions
+	foreach (var region in regions)
+	{
+		WFCGrid grid = region.GetGrid();
+		while (grid.AnimationCoordinates.Count > 0)
+		{
+			allAnimationCoordinates.Enqueue(grid.AnimationCoordinates.Dequeue());
+		}
+	}
 
-    // Process animation coordinates
-    while (allAnimationCoordinates.Count > 0)
-    {
-        CallDeferred("SetNextCell", allAnimationCoordinates.Dequeue().AsVector2I);
-        await Task.Delay(5);
-    }
+	// Process animation coordinates
+	while (allAnimationCoordinates.Count > 0)
+	{
+		CallDeferred("SetNextCell", allAnimationCoordinates.Dequeue().AsVector2I);
+		await Task.Delay(5);
+	}
 
-    GD.Print("After PopulateTilemapAsync");
+	GD.Print("After PopulateTilemapAsync");
 }
 
 	private void SetNextCell(Vector2I c) {
@@ -96,10 +96,8 @@ public partial class Test : TileMap{
 	}
 
 	private void ClearTilemap(){
-		//regionManager.VisualizeRegionCoordinates();
 		foreach (Vector2I v in GetUsedCells(0)){
 			EraseCell(0, v);
 		}
-		//regionManager.ResetRegionCellCoordinates();
 	}
 }
