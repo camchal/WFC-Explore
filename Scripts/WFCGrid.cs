@@ -17,7 +17,9 @@
 			while(!entropyHeap.IsEmpty){
 				EntropyCoordinates coords = entropyHeap.Pop();
 				WFCCell [,] testCells = cells;
-				GD.Print($"cell at 16,2 is collapsed :{cells[0,0].Collapsed}");
+				GD.Print($"region {parentRegion.regionNumber}: cell at 0,0 is collapsed :{cells[0,0].Collapsed}");
+				GD.Print($"cells(0,0) coords x:{cells[0,0].Coordinates.X}");
+				GD.Print($"cells(0,0) coords y:{cells[0,0].Coordinates.Y}");
 				GD.Print($"ent coords x:{coords.Coordinates.X}");
 				GD.Print($"ent coords y:{coords.Coordinates.Y}");
 				GD.Print($"Observing  entropy coordinates: ({coords.Coordinates.X}, {coords.Coordinates.Y}) with entropy {coords.Entropy}");
