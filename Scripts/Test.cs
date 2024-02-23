@@ -1,9 +1,11 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using hamsterbyte.WFC;
 
 public partial class Test : TileMap{
+	public event Action<List<WFCRegion>> AllRegionsComplete;
 	private RegionManager regionManager;
 	[Export] private int mapWidth = 32;
 	[Export] private int mapHeight = 16;
@@ -21,7 +23,10 @@ public partial class Test : TileMap{
 		for(int i = 0; i < numRegions;i++){
 		regionManager.AddRegion(regionWidth, regionHeight, rules);
 		}
-		
+		regionManager.AllRegionsComplete += (regions) => //lambda function
+			{
+				StartPopulatingTilemap(regions);
+			};
 		
 	}
 
@@ -60,32 +65,36 @@ public partial class Test : TileMap{
 
 	// 	return true;
 	// }
+
+	public void GenerationComplete(List<WFCRegion> regions){
+		StartPopulatingTilemap(regions);
+	}
 	private async Task StartPopulatingTilemap(List<WFCRegion> regions)
-{
-	source = TileSet.GetSource(0) as TileSetAtlasSource;
-	GD.Print("Before PopulateTilemapAsync");
-
-	Queue<Coordinates> allAnimationCoordinates = new Queue<Coordinates>();
-
-	// Collect animation coordinates from all regions
-	foreach (var region in regions)
 	{
-		WFCGrid grid = region.GetGrid();
-		while (grid.AnimationCoordinates.Count > 0)
+		source = TileSet.GetSource(0) as TileSetAtlasSource;
+		GD.Print("Before PopulateTilemapAsync");
+
+		Queue<Coordinates> allAnimationCoordinates = new Queue<Coordinates>();
+
+		// Collect animation coordinates from all regions
+		foreach (var region in regions)
 		{
-			allAnimationCoordinates.Enqueue(grid.AnimationCoordinates.Dequeue());
+			WFCGrid grid = region.GetGrid();
+			while (grid.AnimationCoordinates.Count > 0)
+			{
+				allAnimationCoordinates.Enqueue(grid.AnimationCoordinates.Dequeue());
+			}
 		}
-	}
 
-	// Process animation coordinates
-	while (allAnimationCoordinates.Count > 0)
-	{
-		CallDeferred("SetNextCell", allAnimationCoordinates.Dequeue().AsVector2I);
-		await Task.Delay(5);
-	}
+		// Process animation coordinates
+		while (allAnimationCoordinates.Count > 0)
+		{
+			CallDeferred("SetNextCell", allAnimationCoordinates.Dequeue().AsVector2I);
+			await Task.Delay(5);
+		}
 
-	GD.Print("After PopulateTilemapAsync");
-}
+		GD.Print("After PopulateTilemapAsync");
+	}
 
 	private void SetNextCell(Vector2I c) {
 		EraseCell(0, c);

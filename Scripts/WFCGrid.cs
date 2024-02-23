@@ -11,18 +11,26 @@
 	public partial class WFCGrid{
 		private EntropyCoordinates Observe(){
 			int testRegion = parentRegion.regionNumber;
-			if(testRegion == 1 ){
-				//stop here
-			}
+			// if(testRegion == 1 ){
+			// 	//stop here
+			// 			GD.Print($"region {parentRegion.regionNumber}: cell at 0,0 is collapsed :{cells[0,0].Collapsed}");
+			// 			GD.Print($"cells(0,0) coords x:{cells[0,0].Coordinates.X}");
+			// 			GD.Print($"cells(0,0) coords y:{cells[0,0].Coordinates.Y}");
+			// }
 			while(!entropyHeap.IsEmpty){
 				EntropyCoordinates coords = entropyHeap.Pop();
 				WFCCell [,] testCells = cells;
-				GD.Print($"region {parentRegion.regionNumber}: cell at 0,0 is collapsed :{cells[0,0].Collapsed}");
-				GD.Print($"cells(0,0) coords x:{cells[0,0].Coordinates.X}");
-				GD.Print($"cells(0,0) coords y:{cells[0,0].Coordinates.Y}");
-				GD.Print($"ent coords x:{coords.Coordinates.X}");
-				GD.Print($"ent coords y:{coords.Coordinates.Y}");
-				GD.Print($"Observing  entropy coordinates: ({coords.Coordinates.X}, {coords.Coordinates.Y}) with entropy {coords.Entropy}");
+				// GD.Print($"region {parentRegion.regionNumber}: cell at 0,0 is collapsed :{cells[0,0].Collapsed}");
+				// GD.Print($"cells(0,0) coords x:{cells[0,0].Coordinates.X}");
+				// GD.Print($"cells(0,0) coords y:{cells[0,0].Coordinates.Y}");
+				// GD.Print($"ent coords x:{coords.Coordinates.X}");
+				// GD.Print($"ent coords y:{coords.Coordinates.Y}");
+				// GD.Print($"Observing  entropy coordinates: ({coords.Coordinates.X}, {coords.Coordinates.Y}) with entropy {coords.Entropy}");
+
+				// GD.Print("update ent coords");
+				UpdateEntropyCoordinatesOffset(ref coords);
+				// GD.Print($"ent coords x:{coords.Coordinates.X}");
+				// GD.Print($"ent coords y:{coords.Coordinates.Y}");
 				//for cameron coming back, for some reason the entropy coordiantes arent falling with the cell coordinates,
 				// need to look how entropy coords are generated, and if i need to update the entropy coordinates with the normal cell coordinates
 				//GD.Print($"Observing test cell coordinates: ({testCells[coords.Coordinates.X,coords.Coordinates.Y].Coordinates.X}, {testCells[coords.Coordinates.X,coords.Coordinates.Y].Coordinates.Y}) ");
@@ -75,6 +83,12 @@
 			}
 		}
 		
+		private void UpdateEntropyCoordinatesOffset(ref EntropyCoordinates _coords){
+			_coords.Coordinates.X -= parentRegion.regionNumber * parentRegion.GetOffset().X; //(17,0) = 17 - (1) * (16) = (1,0)[actual index in cells array
+			//for now we wont change Y since im currently not offsetting by an actual region. its going to the right
+			//_coords.Coordinates.Y = parentRegion.regionNumber * parentRegion.GetOffset().Y;
+
+		}
 		public void updateCellCoordinates(Offset regionOffset){
 			GD.Print($"Updating Region {parentRegion.regionNumber}'s cells");
 			for(int x = 0; x < width; x++){

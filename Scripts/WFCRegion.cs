@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using hamsterbyte.WFC;
+using System.Security.Cryptography.X509Certificates;
 
 public class WFCRegion {
     private WFCGrid grid;
@@ -21,6 +22,7 @@ public class WFCRegion {
             grid.updateCellCoordinates(regionOffsetConst);//this is kinda messy, should clean up, currently a different
             //method for first cell update, then a new one each time spacebaris pressed
         }
+        
         
     }
     public void InitCellCoordinates(int _regionNumber){
@@ -46,7 +48,10 @@ public class WFCRegion {
     public WFCResult GetResult(){
         return result;
     }
+    public Offset GetOffset(){
 
+        return regionOffsetConst;
+    }
 
     public void Collapse(bool wrap) {
         grid.TryCollapse(wrap);

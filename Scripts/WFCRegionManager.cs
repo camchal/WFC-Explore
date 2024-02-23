@@ -9,6 +9,7 @@ using System.Linq;
 public class RegionManager {
 	private List<WFCRegion> regions;
 	private List<bool> regionCompletionStatus;
+	public event Action<List<WFCRegion>> AllRegionsComplete;
 
 	private Offset regionOffset;
 	private Offset regionOffsetConst;
@@ -47,6 +48,9 @@ public class RegionManager {
 
 	}
 
+	public List<WFCRegion> GetRegionsList(){
+		return regions;
+	}
 	public void AddRegion(int width, int height, List<WFCRule> rules, bool suppressNotifications = false) {
 
 		WFCRegion newRegion = new WFCRegion(width, height, rules, regionOffset, regionNumber);
@@ -91,8 +95,8 @@ public class RegionManager {
 		 // Raise the event (aka fill in animation the animation coords of all grids)
 		 //need to place the invoke on region complete on the end of the grid i believe
 		 //if (!result.Success) return;
-		 // StartPopulatingTilemap(result.Grid);
-		 //GD.Print("All regions completed!");
+		 AllRegionsComplete?.Invoke(regions);
+		 GD.Print("All regions completed!");
 	}
 
 	public WFCRegion GetRegion(int index) {
