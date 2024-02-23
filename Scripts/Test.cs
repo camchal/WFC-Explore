@@ -62,6 +62,11 @@ public partial class Test : TileMap{
 	// 		CallDeferred("SetNextCell", _grid.AnimationCoordinates.Dequeue().AsVector2I);
 	// 		await Task.Delay(5);
 	// 	}
+	// private async Task<bool> PopulateTilemapAsync(WFCGrid _grid){
+	// 	while (_grid.AnimationCoordinates.Count > 0){
+	// 		CallDeferred("SetNextCell", _grid.AnimationCoordinates.Dequeue().AsVector2I);
+	// 		await Task.Delay(5);
+	// 	}
 
 	// 	return true;
 	// }
@@ -80,25 +85,49 @@ public partial class Test : TileMap{
 		foreach (var region in regions)
 		{
 			WFCGrid grid = region.GetGrid();
+			GD.Print($"REGION {region.regionNumber}: COORDS");
+			VisualizeAnimationCoords(grid.AnimationCoordinates);
 			while (grid.AnimationCoordinates.Count > 0)
 			{
+				
 				allAnimationCoordinates.Enqueue(grid.AnimationCoordinates.Dequeue());
 			}
 		}
+		GD.Print("COMBINED");
+		VisualizeAnimationCoords(allAnimationCoordinates);
+
 
 		// Process animation coordinates
 		while (allAnimationCoordinates.Count > 0)
 		{
+			if(allAnimationCoordinates.Count < 260){
+				//stop here
+			}
 			CallDeferred("SetNextCell", allAnimationCoordinates.Dequeue().AsVector2I);
 			await Task.Delay(5);
 		}
 
-		GD.Print("After PopulateTilemapAsync");
+		
+
+	}
+	public void VisualizeAnimationCoords(Queue<Coordinates> allAnimationCoordinates){
+		int count = 0;
+		foreach (var coord in allAnimationCoordinates)
+		{
+			Console.Write($"({coord.X}, {coord.Y}) ");
+			count++;
+			if (count % 16 == 0)
+			{
+				Console.WriteLine();
+			}
+		}
 	}
 
 	private void SetNextCell(Vector2I c) {
 		EraseCell(0, c);
 	WFCGrid grid = regionManager.GetRegion(0).GetGrid(); // Assuming GetGrid() method in WFCRegion
+	//this isnt using the animation coordinates at all? i think it goes back to the grid with the coordiantes in mind and puts the tile based on that
+	//FUCKK
 	int tileIndex = grid[c.X, c.Y].TileIndex;
 	if (tileIndex == -1) return; // Assuming -1 indicates no tile
 	SetCell(0, c, 0, source.GetTileId(tileIndex));
