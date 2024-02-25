@@ -8,23 +8,26 @@ using System.Security.Cryptography.X509Certificates;
 public class WFCRegion {
     private WFCGrid grid;
     private WFCResult result;
-    public event Action<WFCResult,int> onRegionComplete; // Define the onComplete event
+    public event Action<WFCResult,Coordinates> onRegionComplete; // Define the onComplete event
 
-    public int regionNumber;
+    public Coordinates regionIndex;
     public Offset regionOffsetConst;
 
-     public WFCRegion(int width, int height, List<WFCRule> rules, Offset _regionOffset, int passedRegionNum) {
+     public WFCRegion(int width, int height, List<WFCRule> rules, Coordinates _regionIndex) {
         grid = new WFCGrid(width, height, rules, this);
-        regionOffsetConst = _regionOffset;
-        regionNumber = passedRegionNum; 
+
+        //const
+        regionOffsetConst.X = width;
+        regionOffsetConst.Y = height;
+        //were the region resides in the overall regions 2darray
+        regionIndex.X = _regionIndex.X; 
+        regionIndex.Y = _regionIndex.Y;
+
         if(regionOffsetConst.X != 0 || regionOffsetConst.Y !=0){
-            //if not zero then a cell has been added
-            grid.updateCellCoordinates(regionOffsetConst);//this is kinda messy, should clean up, currently a different
-            //method for first cell update, then a new one each time spacebaris pressed
+            //REMEMBER I USED TO OFFSET COORDS HERE
         }
-        
-        
     }
+
     public void InitCellCoordinates(int _regionNumber){
         Offset updateRegionOffset;
         updateRegionOffset.X = (_regionNumber * regionOffsetConst.X);
@@ -37,7 +40,7 @@ public class WFCRegion {
         //GD.Print("now inside region.cs");
         //GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
 
-        onRegionComplete?.Invoke(result,regionNumber);
+        onRegionComplete?.Invoke(result,regionIndex);
     }
     public int this[int x, int y] {
         get { return grid[x, y].TileIndex; }
