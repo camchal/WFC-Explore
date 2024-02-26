@@ -11,8 +11,8 @@ public partial class Test : TileMap{
 	[Export] private int mapHeight = 16;
 	[Export] private int regionWidth = 16;
 	[Export] private int regionHeight = 16;
-	[Export] private int numRegionsRows = 1;
-	[Export] private int numRegionsCols = 2;
+	[Export] private int numRegionsRows = 2;
+	[Export] private int numRegionsCols = 4;
 	[Export(PropertyHint.File)] private string rulePath;
 	[Export] private bool wrap;
 	private TileSetAtlasSource source;
@@ -93,7 +93,7 @@ public partial class Test : TileMap{
 	}
 	private void SetNextCell(Vector2I c, int i, int j) {
 		//EraseCell(0, c);
-	    Coordinates tempIndex = new Coordinates();
+		Coordinates tempIndex = new Coordinates();
 		tempIndex.X = i; tempIndex.Y=j;
 		WFCGrid grid = regionManager.GetRegion(tempIndex).GetGrid(); // Assuming GetGrid() method in WFCRegion
 		//this isnt using the animation coordinates at all? i think it goes back to the grid with the coordiantes in mind and puts the tile based on that

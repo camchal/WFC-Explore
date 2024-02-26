@@ -71,14 +71,14 @@ public class RegionManager {
 		//GD.Print($"Region number: {regionNumber}, Region Results length: {regionResults.Length}");
 
 		regionResults[_regionIndex.X,_regionIndex.Y] = result; //<--- somehow the problem for out of bounds, once done handle animation
-		GD.Print($"successfully replaced region result for region {_regionIndex.Y}");
+		//GD.Print($"successfully replaced region result for region {_regionIndex.Y}");
 		regionCompletionStatus[_regionIndex.X,_regionIndex.Y] = true; // Mark region as complete
-		GD.Print("Region Completion Status:");
-		for (int i = 0; i < regionDimensions.X; i++){
-			for(int j = 0; j <regionDimensions.Y; j++){
-				GD.Print($"Region({i},{j}) completion status: {result.Success}");
-			}
-		}
+		//GD.Print("Region Completion Status:");
+		// for (int i = 0; i < regionDimensions.X; i++){
+		// 	for(int j = 0; j <regionDimensions.Y; j++){
+		// 		GD.Print($"Region({i},{j}) completion status: {result.Success}");
+		// 	}
+		// }
 		//LogRegionManagerState();
 		//failing somewhere around here, but it seems like 
 
@@ -86,7 +86,7 @@ public class RegionManager {
 
 		if (CheckAllComplete(regionCompletionStatus))
 {
-			VisualizeRegionCoordinates();
+			//VisualizeRegionCoordinates();
 			GD.Print("All regions completed!");
 			OnAllRegionsComplete();
 }
@@ -101,17 +101,17 @@ public class RegionManager {
 	}
 	public bool CheckAllComplete(bool[,] array)
 {
-    for (int i = 0; i < array.GetLength(0); i++)
-    {
-        for (int j = 0; j < array.GetLength(1); j++)
-        {
-            if (!array[i, j])
-            {
-                return false;
-            }
-        }
-    }
-    return true;
+	for (int i = 0; i < array.GetLength(0); i++)
+	{
+		for (int j = 0; j < array.GetLength(1); j++)
+		{
+			if (!array[i, j])
+			{
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 	public WFCRegion GetRegion(Coordinates _regionIndex) {
@@ -127,7 +127,7 @@ public class RegionManager {
 					return true;
 				}
 			}
-    	}
+		}
 		return false;
 	}
 
