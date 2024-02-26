@@ -11,7 +11,7 @@ public partial class Test : TileMap{
 	[Export] private int mapHeight = 16;
 	[Export] private int regionWidth = 16;
 	[Export] private int regionHeight = 16;
-	[Export] private int numRegionsRows = 0;
+	[Export] private int numRegionsRows = 1;
 	[Export] private int numRegionsCols = 2;
 	[Export(PropertyHint.File)] private string rulePath;
 	[Export] private bool wrap;
@@ -92,7 +92,7 @@ public partial class Test : TileMap{
 		}
 	}
 	private void SetNextCell(Vector2I c, int i, int j) {
-		EraseCell(0, c);
+		//EraseCell(0, c);
 	    Coordinates tempIndex = new Coordinates();
 		tempIndex.X = i; tempIndex.Y=j;
 		WFCGrid grid = regionManager.GetRegion(tempIndex).GetGrid(); // Assuming GetGrid() method in WFCRegion
@@ -100,6 +100,11 @@ public partial class Test : TileMap{
 		//FUCKK
 		int tileIndex = grid[c.X, c.Y].TileIndex;
 		if (tileIndex == -1) return; // Assuming -1 indicates no tile
+		Offset regionOffset = regionManager.GetRegion(tempIndex).GetOffset();
+		
+		c.X += regionOffset.X * j;
+		c.Y += regionOffset.Y * i;
+
 		SetCell(0, c, 0, source.GetTileId(tileIndex));
 	}
 
@@ -108,7 +113,8 @@ public partial class Test : TileMap{
 			EraseCell(0, v);
 		}
 	}
-		public void VisualizeAnimationCoords(Queue<Coordinates> allAnimationCoordinates){
+	
+	public void VisualizeAnimationCoords(Queue<Coordinates> allAnimationCoordinates){
 		int count = 0;
 		foreach (var coord in allAnimationCoordinates)
 		{
@@ -119,5 +125,5 @@ public partial class Test : TileMap{
 				Console.WriteLine();
 			}
 		}
-	}
+	}	
 }

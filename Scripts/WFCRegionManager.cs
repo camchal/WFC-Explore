@@ -45,7 +45,7 @@ public class RegionManager {
 				regions[i,j] = AddRegion(regionWidth, regionHeight,rules, regionIndex);
 				regionCounter++;
 			}
-		}
+		}GD.Print("addreg");
 
 		completedRegions = 0; //needed?
 
