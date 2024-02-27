@@ -1,0 +1,593 @@
+[
+  {
+    "Frequency": 145,
+    "Options": {
+      "Up": [
+        12,
+        0,
+        2,
+        1,
+        7
+      ],
+      "Right": [
+        2,
+        0,
+        1,
+        5,
+        6,
+        7
+      ],
+      "Down": [
+        0,
+        2,
+        10,
+        1,
+        25,
+        5,
+        14
+      ],
+      "Left": [
+        15,
+        0,
+        2,
+        1
+      ]
+    }
+  },
+  {
+    "Frequency": 10,
+    "Options": {
+      "Up": [
+        0,
+        12
+      ],
+      "Right": [
+        0,
+        6
+      ],
+      "Down": [
+        0,
+        10
+      ],
+      "Left": [
+        0,
+        14
+      ]
+    }
+  },
+  {
+    "Frequency": 6,
+    "Options": {
+      "Up": [
+        0,
+        12
+      ],
+      "Right": [
+        0
+      ],
+      "Down": [
+        0
+      ],
+      "Left": [
+        15,
+        0
+      ]
+    }
+  },
+  {
+    "Frequency": 0,
+    "Options": {
+      "Up": [],
+      "Right": [],
+      "Down": [],
+      "Left": []
+    }
+  },
+  {
+    "Frequency": 354,
+    "Options": {
+      "Up": [
+        4,
+        29,
+        21,
+        27,
+        30,
+        10,
+        9,
+        20,
+        28,
+        11,
+        19,
+        24,
+        23
+      ],
+      "Right": [
+        4,
+        18,
+        15,
+        19,
+        29,
+        27,
+        9,
+        28
+      ],
+      "Down": [
+        4,
+        18,
+        12,
+        9,
+        22,
+        28
+      ],
+      "Left": [
+        4,
+        27,
+        6,
+        23,
+        30,
+        9,
+        22,
+        28
+      ]
+    }
+  },
+  {
+    "Frequency": 2,
+    "Options": {
+      "Up": [
+        0
+      ],
+      "Right": [
+        10
+      ],
+      "Down": [
+        6
+      ],
+      "Left": [
+        0
+      ]
+    }
+  },
+  {
+    "Frequency": 20,
+    "Options": {
+      "Up": [
+        5,
+        6,
+        22
+      ],
+      "Right": [
+        21,
+        4
+      ],
+      "Down": [
+        6,
+        7,
+        23
+      ],
+      "Left": [
+        0,
+        1
+      ]
+    }
+  },
+  {
+    "Frequency": 1,
+    "Options": {
+      "Up": [
+        6
+      ],
+      "Right": [
+        12
+      ],
+      "Down": [
+        0
+      ],
+      "Left": [
+        0
+      ]
+    }
+  },
+  {
+    "Frequency": 0,
+    "Options": {
+      "Up": [],
+      "Right": [],
+      "Down": [],
+      "Left": []
+    }
+  },
+  {
+    "Frequency": 7,
+    "Options": {
+      "Up": [
+        4
+      ],
+      "Right": [
+        4
+      ],
+      "Down": [
+        4,
+        12
+      ],
+      "Left": [
+        4
+      ]
+    }
+  },
+  {
+    "Frequency": 20,
+    "Options": {
+      "Up": [
+        0,
+        1
+      ],
+      "Right": [
+        10,
+        25,
+        23,
+        14
+      ],
+      "Down": [
+        21,
+        4,
+        20,
+        28,
+        11,
+        24
+      ],
+      "Left": [
+        19,
+        10,
+        25,
+        5
+      ]
+    }
+  },
+  {
+    "Frequency": 2,
+    "Options": {
+      "Up": [
+        10
+      ],
+      "Right": [
+        21
+      ],
+      "Down": [
+        4
+      ],
+      "Left": [
+        21,
+        20
+      ]
+    }
+  },
+  {
+    "Frequency": 23,
+    "Options": {
+      "Up": [
+        4,
+        9
+      ],
+      "Right": [
+        12,
+        22
+      ],
+      "Down": [
+        0,
+        2,
+        1
+      ],
+      "Left": [
+        18,
+        12,
+        7
+      ]
+    }
+  },
+  {
+    "Frequency": 0,
+    "Options": {
+      "Up": [],
+      "Right": [],
+      "Down": [],
+      "Left": []
+    }
+  },
+  {
+    "Frequency": 1,
+    "Options": {
+      "Up": [
+        0
+      ],
+      "Right": [
+        1
+      ],
+      "Down": [
+        15
+      ],
+      "Left": [
+        10
+      ]
+    }
+  },
+  {
+    "Frequency": 22,
+    "Options": {
+      "Up": [
+        18,
+        15,
+        14
+      ],
+      "Right": [
+        0,
+        2
+      ],
+      "Down": [
+        15,
+        19
+      ],
+      "Left": [
+        4,
+        28
+      ]
+    }
+  },
+  {
+    "Frequency": 0,
+    "Options": {
+      "Up": [],
+      "Right": [],
+      "Down": [],
+      "Left": []
+    }
+  },
+  {
+    "Frequency": 0,
+    "Options": {
+      "Up": [],
+      "Right": [],
+      "Down": [],
+      "Left": []
+    }
+  },
+  {
+    "Frequency": 1,
+    "Options": {
+      "Up": [
+        4
+      ],
+      "Right": [
+        12
+      ],
+      "Down": [
+        15
+      ],
+      "Left": [
+        4
+      ]
+    }
+  },
+  {
+    "Frequency": 2,
+    "Options": {
+      "Up": [
+        15
+      ],
+      "Right": [
+        10
+      ],
+      "Down": [
+        29,
+        4
+      ],
+      "Left": [
+        4
+      ]
+    }
+  },
+  {
+    "Frequency": 3,
+    "Options": {
+      "Up": [
+        10
+      ],
+      "Right": [
+        21,
+        11,
+        30
+      ],
+      "Down": [
+        4
+      ],
+      "Left": [
+        21
+      ]
+    }
+  },
+  {
+    "Frequency": 9,
+    "Options": {
+      "Up": [
+        10
+      ],
+      "Right": [
+        21,
+        26,
+        30,
+        20,
+        11,
+        24
+      ],
+      "Down": [
+        4
+      ],
+      "Left": [
+        29,
+        21,
+        26,
+        6,
+        20,
+        11,
+        24
+      ]
+    }
+  },
+  {
+    "Frequency": 2,
+    "Options": {
+      "Up": [
+        4
+      ],
+      "Right": [
+        4
+      ],
+      "Down": [
+        6
+      ],
+      "Left": [
+        12
+      ]
+    }
+  },
+  {
+    "Frequency": 3,
+    "Options": {
+      "Up": [
+        6
+      ],
+      "Right": [
+        4
+      ],
+      "Down": [
+        30,
+        4
+      ],
+      "Left": [
+        10
+      ]
+    }
+  },
+  {
+    "Frequency": 1,
+    "Options": {
+      "Up": [
+        10
+      ],
+      "Right": [
+        21
+      ],
+      "Down": [
+        4
+      ],
+      "Left": [
+        21
+      ]
+    }
+  },
+  {
+    "Frequency": 1,
+    "Options": {
+      "Up": [
+        0
+      ],
+      "Right": [
+        10
+      ],
+      "Down": [
+        26
+      ],
+      "Left": [
+        10
+      ]
+    }
+  },
+  {
+    "Frequency": 1,
+    "Options": {
+      "Up": [
+        25
+      ],
+      "Right": [
+        21
+      ],
+      "Down": [
+        27
+      ],
+      "Left": [
+        21
+      ]
+    }
+  },
+  {
+    "Frequency": 1,
+    "Options": {
+      "Up": [
+        26
+      ],
+      "Right": [
+        4
+      ],
+      "Down": [
+        4
+      ],
+      "Left": [
+        4
+      ]
+    }
+  },
+  {
+    "Frequency": 4,
+    "Options": {
+      "Up": [
+        10,
+        4
+      ],
+      "Right": [
+        15,
+        4
+      ],
+      "Down": [
+        4
+      ],
+      "Left": [
+        4
+      ]
+    }
+  },
+  {
+    "Frequency": 1,
+    "Options": {
+      "Up": [
+        19
+      ],
+      "Right": [
+        21
+      ],
+      "Down": [
+        4
+      ],
+      "Left": [
+        4
+      ]
+    }
+  },
+  {
+    "Frequency": 2,
+    "Options": {
+      "Up": [
+        23
+      ],
+      "Right": [
+        4
+      ],
+      "Down": [
+        4
+      ],
+      "Left": [
+        21,
+        20
+      ]
+    }
+  }
+]
