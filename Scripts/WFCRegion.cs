@@ -36,9 +36,7 @@ public class WFCRegion {
     }
 
     public void ChildGridCompleted(WFCResult _result){
-        result = _result;
-        GD.Print("now inside region.cs");
-        //GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
+        result = _result; 
 
         onRegionComplete?.Invoke(result,regionIndex);
     }

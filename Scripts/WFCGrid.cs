@@ -1,4 +1,4 @@
- namespace hamsterbyte.WFC{
+﻿ namespace hamsterbyte.WFC{
 	using System;
 	using System.Diagnostics;
 	using System.Globalization;
@@ -52,13 +52,6 @@
 		
 		private void Collapse(Coordinates _coords){
 			int collapsedIndex = cells[_coords.X, _coords.Y].Collapse();//returns collapsed index
-			if(parentRegion.regionIndex.Y == 1 ){
-				//stop here
-				
-			}
-			// Coordinates OffsetAnimationCoords = new Coordinates();
-			// OffsetAnimationCoords.X = _coords.X + parentRegion.regionNumber * parentRegion.GetOffset().X;
-			// OffsetAnimationCoords.Y = _coords.Y + parentRegion.regionNumber * parentRegion.GetOffset().Y;
 			AnimationCoordinates.Enqueue(_coords);
 			removalUpdates.Push(new RemovalUpdate(){
 				Coordinates = _coords,
@@ -99,12 +92,6 @@
 			}
 		}
 		
-		private void UpdateEntropyCoordinatesOffset(ref EntropyCoordinates _coords){
-			//_coords.Coordinates.X -= parentRegion.regionNumber * parentRegion.GetOffset().X; //(17,0) = 17 - (1) * (16) = (1,0)[actual index in cells array
-			//for now we wont change Y since im currently not offsetting by an actual region. its going to the right
-			//_coords.Coordinates.Y = parentRegion.regionNumber * parentRegion.GetOffset().Y;
-
-		}
 		public void updateCellCoordinates(Offset regionOffset){
 			// GD.Print($"Updating Region {parentRegion.regionNumber}'s cells");
 			for(int x = 0; x < width; x++){
@@ -117,21 +104,12 @@
 			return cells;
 		}
 		public void TryCollapse(bool _wrap = true, int _maxAttempts = 100){
-				if(parentRegion.regionIndex.Y == 1){
-					//stop here
-				}
-				// WFCCell [,] cellCoord = getCellCoordinates();
-				// WFCCell testCell = cellCoord[0,0];
-				// GD.Print($"region {parentRegion.regionNumber}'s first cell is ({testCell.Coordinates.X + ", " + testCell.Coordinates.Y})");
 				Reset(true);
-				//parentRegion.InitCellCoordinates(parentRegion.regionNumber);//reinitalize the cell coords according to region
 				Busy = true;
-				// testCell = cellCoord[0,0];
-				// GD.Print($"region {parentRegion.regionNumber}'s first cell is ({testCell.Coordinates.X + ", " + testCell.Coordinates.Y})");
 				Stopwatch timer = Stopwatch.StartNew();
 				for(int i  = 0; i < _maxAttempts; i++){
 					currentAttempt++;
-					GD.Print($"region {parentRegion.regionIndex.Y} is trying a new attempt");
+					//GD.Print($"region {parentRegion.regionIndex.Y} is trying a new attempt");
 					WFCCell cell = cells.Random();
 					entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = cell.Coordinates,
@@ -156,16 +134,21 @@
 					ElapsedMilliseconds = timer.ElapsedMilliseconds
 				};
 				GD.Print($"region {parentRegion.regionIndex.Y} got to the end");
-				// WFCCell [,] cellCoord = getCellCoordinates();
-				// WFCCell testCell = cellCoord[0,0];
-				// GD.Print($"region {parentRegion.regionNumber}'s first cell is ({testCell.Coordinates.X + ", " + testCell.Coordinates.Y})");
-				
-				//GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
-
-				// need to modify this
+				if(!result.Success){
+					ShowResultMetrics(result);
+				}
 				parentRegion.ChildGridCompleted(result);
 
 				Busy = false;
 		}
+		public void ShowResultMetrics(WFCResult result)
+		{
+			GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y} failed max attempts");
+			GD.Print($"Grid: {result.Grid}");
+			GD.Print($"Success: {result.Success}");
+			GD.Print($"Attempts: {result.Attempts}");
+			GD.Print($"Elapsed Milliseconds: {result.ElapsedMilliseconds}");
+		}
 	}
+	
 }

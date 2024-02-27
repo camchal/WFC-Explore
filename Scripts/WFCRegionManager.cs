@@ -35,7 +35,6 @@ public class RegionManager {
 		//InitializeLists(_numRegions); //fills regionResults and regionCompstat with empty vars that will be replaced
 		//could be an issue
 		
-		GD.Print("in constructor!");
 		//intialize and add regions to 2d array
 		int regionCounter = 0;
 		Coordinates regionIndex;
@@ -45,9 +44,7 @@ public class RegionManager {
 				regions[i,j] = AddRegion(regionWidth, regionHeight,rules, regionIndex);
 				regionCounter++;
 			}
-		}GD.Print("addreg");
-
-		completedRegions = 0; //needed?
+		}
 
 	}
 	
@@ -66,23 +63,12 @@ public class RegionManager {
 
 	private void OnRegionComplete(WFCResult result, Coordinates _regionIndex)
 	{
-		//GD.Print("now inside regionmanager.cs");
-		//GD.Print($"  Result: {result.Grid}, Success: {result.Success}, Attempts: {result.Attempts}, ElapsedMilliseconds: {result.ElapsedMilliseconds}");
-		//GD.Print($"Region number: {regionNumber}, Region Results length: {regionResults.Length}");
 
-		regionResults[_regionIndex.X,_regionIndex.Y] = result; //<--- somehow the problem for out of bounds, once done handle animation
-		//GD.Print($"successfully replaced region result for region {_regionIndex.Y}");
+		regionResults[_regionIndex.X,_regionIndex.Y] = result; 
+	
 		regionCompletionStatus[_regionIndex.X,_regionIndex.Y] = true; // Mark region as complete
-		//GD.Print("Region Completion Status:");
-		// for (int i = 0; i < regionDimensions.X; i++){
-		// 	for(int j = 0; j <regionDimensions.Y; j++){
-		// 		GD.Print($"Region({i},{j}) completion status: {result.Success}");
-		// 	}
-		// }
+		
 		//LogRegionManagerState();
-		//failing somewhere around here, but it seems like 
-
-		//GD.Print($"region {regionNumber} called on Region COmplete");
 
 		if (CheckAllComplete(regionCompletionStatus))
 {
@@ -94,10 +80,8 @@ public class RegionManager {
 	 private void OnAllRegionsComplete()
 	{
 		 // Raise the event (aka fill in animation the animation coords of all grids)
-		 //need to place the invoke on region complete on the end of the grid i believe
-		 //if (!result.Success) return;
+		 //if (!result.Success) return; <--remember this
 		 AllRegionsComplete?.Invoke(regions);
-		 GD.Print("All regions completed!");
 	}
 	public bool CheckAllComplete(bool[,] array)
 {
@@ -139,14 +123,6 @@ public class RegionManager {
 			region.Collapse(wrap);
 		}
 	}
-	public void ResetRegionCellCoordinates()
-{
-	foreach (WFCRegion region in regions)
-	{
-		//region.InitCellCoordinates(region.regionNumber); //might not be neccesarry?
-	}
-}
-
 
 /// <summary>
 /// DEBUG FUNCTIONS

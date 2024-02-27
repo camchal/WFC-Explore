@@ -18,7 +18,6 @@ public partial class Test : TileMap{
 	private TileSetAtlasSource source;
 
 	public override void _Ready(){
-		//WFCGrid.onComplete += OnGenerationComplete;
 		List<WFCRule> rules = WFCRule.FromJSONFile(ProjectSettings.GlobalizePath(rulePath));
 		regionManager = new RegionManager(regionWidth, regionHeight, numRegionsRows,numRegionsCols, rules);
 		regionManager.AllRegionsComplete += (regions) => //lambda function
@@ -34,10 +33,7 @@ public partial class Test : TileMap{
 		}
 	}
 
-	// private void OnGenerationComplete(WFCResult result){
-	// 	if (!result.Success) return;
-	// 	StartPopulatingTilemap(result.Grid);
-	// }
+	
 
 	private void GenerateGrid(){
 		if (regionManager.IsAnyRegionBusy()) return; //possible issue here
@@ -45,29 +41,6 @@ public partial class Test : TileMap{
 		regionManager.CollapseRegions(wrap);
 
 	}
-
-	// private async Task StartPopulatingTilemap(WFCGrid _grid){
-	// 	source = TileSet.GetSource(0) as TileSetAtlasSource;
-	// 	GD.Print("Before PopulateTilemapAsync");
-	// 	bool complete = await Task.Run(() => PopulateTilemapAsync(_grid));
-	// 	GD.Print("After PopulateTilemapAsync");
-	// 	GD.Print(complete);
-	// }
-	
-
-	// private async Task<bool> PopulateTilemapAsync(WFCGrid _grid){
-	// 	while (_grid.AnimationCoordinates.Count > 0){
-	// 		CallDeferred("SetNextCell", _grid.AnimationCoordinates.Dequeue().AsVector2I);
-	// 		await Task.Delay(5);
-	// 	}
-	// private async Task<bool> PopulateTilemapAsync(WFCGrid _grid){
-	// 	while (_grid.AnimationCoordinates.Count > 0){
-	// 		CallDeferred("SetNextCell", _grid.AnimationCoordinates.Dequeue().AsVector2I);
-	// 		await Task.Delay(5);
-	// 	}
-
-	// 	return true;
-	// }
 
 	public void GenerationComplete(WFCRegion[,] regions){
 		//StartPopulatingTilemap(regions);
@@ -92,12 +65,10 @@ public partial class Test : TileMap{
 		}
 	}
 	private void SetNextCell(Vector2I c, int i, int j) {
-		//EraseCell(0, c);
+		//EraseCell(0, c); // remember this
 		Coordinates tempIndex = new Coordinates();
 		tempIndex.X = i; tempIndex.Y=j;
 		WFCGrid grid = regionManager.GetRegion(tempIndex).GetGrid(); // Assuming GetGrid() method in WFCRegion
-		//this isnt using the animation coordinates at all? i think it goes back to the grid with the coordiantes in mind and puts the tile based on that
-		//FUCKK
 		int tileIndex = grid[c.X, c.Y].TileIndex;
 		if (tileIndex == -1) return; // Assuming -1 indicates no tile
 		Offset regionOffset = regionManager.GetRegion(tempIndex).GetOffset();
