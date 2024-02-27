@@ -1,0 +1,215 @@
+[
+  {
+    "Frequency": 180,
+    "Options": {
+      "Up": [
+        0,
+        4,
+        7,
+        10,
+        3
+      ],
+      "Right": [
+        0,
+        2,
+        3,
+        4,
+        7
+      ],
+      "Down": [
+        0,
+        2,
+        5,
+        8
+      ],
+      "Left": [
+        0,
+        8,
+        9,
+        10
+      ]
+    }
+  },
+  {
+    "Frequency": 0,
+    "Options": {
+      "Up": [],
+      "Right": [],
+      "Down": [],
+      "Left": []
+    }
+  },
+  {
+    "Frequency": 4,
+    "Options": {
+      "Up": [
+        0
+      ],
+      "Right": [
+        5
+      ],
+      "Down": [
+        3
+      ],
+      "Left": [
+        0
+      ]
+    }
+  },
+  {
+    "Frequency": 9,
+    "Options": {
+      "Up": [
+        2,
+        3
+      ],
+      "Right": [
+        6
+      ],
+      "Down": [
+        3,
+        4,
+        0
+      ],
+      "Left": [
+        0
+      ]
+    }
+  },
+  {
+    "Frequency": 3,
+    "Options": {
+      "Up": [
+        3
+      ],
+      "Right": [
+        7
+      ],
+      "Down": [
+        0
+      ],
+      "Left": [
+        0
+      ]
+    }
+  },
+  {
+    "Frequency": 15,
+    "Options": {
+      "Up": [
+        0
+      ],
+      "Right": [
+        5,
+        8
+      ],
+      "Down": [
+        6
+      ],
+      "Left": [
+        2,
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "Frequency": 35,
+    "Options": {
+      "Up": [
+        5,
+        6,
+        9
+      ],
+      "Right": [
+        6,
+        9,
+        5
+      ],
+      "Down": [
+        6,
+        7
+      ],
+      "Left": [
+        3,
+        6,
+        7
+      ]
+    }
+  },
+  {
+    "Frequency": 16,
+    "Options": {
+      "Up": [
+        6
+      ],
+      "Right": [
+        7,
+        10,
+        6
+      ],
+      "Down": [
+        0
+      ],
+      "Left": [
+        4,
+        7,
+        0
+      ]
+    }
+  },
+  {
+    "Frequency": 5,
+    "Options": {
+      "Up": [
+        0
+      ],
+      "Right": [
+        0
+      ],
+      "Down": [
+        9
+      ],
+      "Left": [
+        5
+      ]
+    }
+  },
+  {
+    "Frequency": 9,
+    "Options": {
+      "Up": [
+        8,
+        9
+      ],
+      "Right": [
+        0
+      ],
+      "Down": [
+        9,
+        10,
+        6
+      ],
+      "Left": [
+        6
+      ]
+    }
+  },
+  {
+    "Frequency": 4,
+    "Options": {
+      "Up": [
+        9
+      ],
+      "Right": [
+        0
+      ],
+      "Down": [
+        0
+      ],
+      "Left": [
+        7
+      ]
+    }
+  }
+]
