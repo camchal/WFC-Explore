@@ -12,38 +12,11 @@
 
 		public int numattempt = 0;
 		private EntropyCoordinates Observe(){
-			int testRegion = parentRegion.regionIndex.Y;
-			if(testRegion == 1 ){
-				numattempt++;
-				//stop here
-						// GD.Print($"region {parentRegion.regionNumber}: cell at 0,0 is collapsed :{cells[0,0].Collapsed}");
-						// GD.Print($"cells(0,0) coords x:{cells[0,0].Coordinates.X}");
-						// GD.Print($"cells(0,0) coords y:{cells[0,0].Coordinates.Y}");
-			}
-			// if(numattempt > 256){
-			// 	//stop here
-			// 	GD.Print("256 debug");
-			// }
-			//GD.Print($"attempt number:{numattempt}");
+			
 			while(!entropyHeap.IsEmpty){
 				EntropyCoordinates coords = entropyHeap.Pop();
 				WFCCell [,] testCells = cells;
-				// GD.Print($"region {parentRegion.regionNumber}: cell at 0,0 is collapsed :{cells[0,0].Collapsed}");
-				// GD.Print($"cells(0,0) coords x:{cells[0,0].Coordinates.X}");
-				// GD.Print($"cells(0,0) coords y:{cells[0,0].Coordinates.Y}");
-				// GD.Print($"ent coords x:{coords.Coordinates.X}");
-				// GD.Print($"ent coords y:{coords.Coordinates.Y}");
-				// GD.Print($"Observing  entropy coordinates: ({coords.Coordinates.X}, {coords.Coordinates.Y}) with entropy {coords.Entropy}");
-
-				// GD.Print("update ent coords");
-				//if(currentAttempt == 1)UpdateEntropyCoordinatesOffset(ref coords);
-				// GD.Print($"ent coords x:{coords.Coordinates.X}");
-				// GD.Print($"ent coords y:{coords.Coordinates.Y}");
-				//for cameron coming back, for some reason the entropy coordiantes arent falling with the cell coordinates,
-				// need to look how entropy coords are generated, and if i need to update the entropy coordinates with the normal cell coordinates
-				// GD.Print($"Observing region {parentRegion.regionNumber}:TESTCELL coordinates: ({testCells[coords.Coordinates.X,coords.Coordinates.Y].Coordinates.X}, {testCells[coords.Coordinates.X,coords.Coordinates.Y].Coordinates.Y}) ");
-				// GD.Print($"Observing region {parentRegion.regionNumber}: ENTROPY coordinates: ({coords.Coordinates.X}, {coords.Coordinates.Y}) with entropy {coords.Entropy} and cells.collapsed is {cells[coords.Coordinates.X ,coords.Coordinates.Y].Collapsed}");
-				 if(!cells[coords.Coordinates.X, coords.Coordinates.Y].Collapsed){ 
+				if(!cells[coords.Coordinates.X, coords.Coordinates.Y].Collapsed){ 
 					return coords;}
 			}
 			GD.Print("Heap was emptied!");
