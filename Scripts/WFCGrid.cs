@@ -37,7 +37,7 @@
 			while(removalUpdates.Count > 0){
 				RemovalUpdate update = removalUpdates.Pop();
 				if (update.TileIndex == -1){
-					validCollapse = false;
+					validCollapse = false;//generation failed
 					return;
 				}
 
@@ -106,10 +106,15 @@
 					Attempts = currentAttempt,
 					ElapsedMilliseconds = timer.ElapsedMilliseconds
 				};
-				GD.Print($"region {parentRegion.regionIndex.Y} got to the end");
+				//GD.Print($"region {parentRegion.regionIndex.Y} got to the end");
 				if(!result.Success){
 					ShowResultMetrics(result);
 				}
+				else{
+					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y} suceeded");
+					GD.Print($"Attempts: {result.Attempts}");
+				}
+				GD.Print($"Success: {result.Success}");
 				parentRegion.ChildGridCompleted(result);
 
 				Busy = false;

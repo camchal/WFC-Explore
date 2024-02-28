@@ -48,7 +48,6 @@ public partial class Test : TileMap{
 	private async Task StartPopulatingTilemap(WFCRegion[,] regions, Coordinates _regionDimensions)
 	{
 		source = TileSet.GetSource(0) as TileSetAtlasSource;
-		GD.Print("Before PopulateTilemapAsync");
 
 		
 		for(int i = 0; i < _regionDimensions.X; i++){

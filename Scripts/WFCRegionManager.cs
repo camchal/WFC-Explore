@@ -73,7 +73,7 @@ public class RegionManager {
 		if (CheckAllComplete(regionCompletionStatus))
 {
 			//VisualizeRegionCoordinates();
-			GD.Print("All regions completed!");
+			//GD.Print("All regions completed!");
 			OnAllRegionsComplete();
 }
 		}
