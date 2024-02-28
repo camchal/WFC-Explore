@@ -1,0 +1,18 @@
+ideas for backtracking: if a cell fails to collapse, then regenerate its neighbors. somehow re-roll those slots. 
+I dont really know how this works though to be honest.
+
+//get index of coordinate that failed, get index in cell array - find its neighbors, 
+    if its neighbros are in a differnt region, then get that regions cells depending on cardinal direction
+
+    see if i can reroll the genereration - this would be in accordance to its neighbors though, if there are no other rerolls
+        or if there was a reroll, then move to the next neighbor - assuming that its generated. perhaps this back tracking is chain like?
+    maybe it backtracks and regenerates areas multiple times? the question is how many times should back track fail before region
+    is regenerated completely?
+    plus i gotta figure out how to even re roll the cell. is the information stored? or can i get its neighbors characterisitcs
+    and redo its possible tiles?
+
+should i keep track of the backtracked cells and requeue their tiles to be updated in the animation queue? could be cool to see how the region changes
+ofc each change should be added back to the regions independent animation queue
+
+need to somehow fix the fucking proto_tileset. thats a must. although that tileset would probably be succeeding every single time
+need to know why it works so well
