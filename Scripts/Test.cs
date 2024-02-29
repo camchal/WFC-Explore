@@ -9,9 +9,9 @@ public partial class Test : TileMap{
 	private RegionManager regionManager;
 	[Export] private int mapWidth = 32;
 	[Export] private int mapHeight = 16;
-	[Export] private int regionWidth = 8;
-	[Export] private int regionHeight = 8;
-	[Export] private int numRegionsRows = 1;
+	[Export] private int regionWidth = 10;
+	[Export] private int regionHeight = 10;
+	[Export] private int numRegionsRows = 2;
 	[Export] private int numRegionsCols = 3;
 	[Export(PropertyHint.File)] private string rulePath;
 	[Export] private bool wrap;
@@ -48,11 +48,13 @@ public partial class Test : TileMap{
 	private async Task StartPopulatingTilemap(WFCRegion[,] regions, Coordinates _regionDimensions)
 	{
 		source = TileSet.GetSource(0) as TileSetAtlasSource;
+		
 
 		
 		for(int i = 0; i < _regionDimensions.X; i++){
 			for(int j = 0; j < _regionDimensions.Y; j++){
 				WFCGrid grid = regions[i,j].GetGrid();
+				GD.Print($"region ({regions[i,j].regionIndex.X},{regions[i,j].regionIndex.Y}) is beginning tilemap population");
 				//offset the animation coordinates
 				// Process animation coordinates
 				while (grid.AnimationCoordinates.Count > 0)

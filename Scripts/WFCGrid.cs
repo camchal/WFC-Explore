@@ -57,10 +57,13 @@
 							currentCell.RemoveOption(o);
 						}
 					}
+					GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST CARDINALS");
+					GD.Print($"EntropyHeap full: {entropyHeap.isHeapFull()}");
 					entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = currentCell.Coordinates,
 						Entropy = currentCell.Entropy
 					});
+					GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST ENTROPYHEAP PUSH");
 				}
 			}
 		}
@@ -82,19 +85,24 @@
 				Stopwatch timer = Stopwatch.StartNew();
 				for(int i  = 0; i < _maxAttempts; i++){
 					currentAttempt++;
-					//GD.Print($"region {parentRegion.regionIndex.Y} is trying a new attempt");
+					GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} is trying a new attempt");
 					WFCCell cell = cells.Random();
+
 					entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = cell.Coordinates,
 						Entropy = cell.Entropy
 					});
+					GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} PUSHED NEW COORDS");
 
 					while (remainingUncollapsedCells > 0){
 						EntropyCoordinates e = Observe();
+						GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST OBSERVE");
 						Collapse(e.Coordinates);
+						GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST COLLAPSE");
 						Propagate(_wrap);
+						GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST PROPGATE");
 					}
-
+					GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST WHILE LOOP");
 					if(!validCollapse && i < _maxAttempts - 1){
 						Reset();
 					} else break;

@@ -1,4 +1,4 @@
-/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+﻿/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 |||||||||||||||||||||||||||||||||||||||||||||| MIT LICENSE ||||||||||||||||||||||||||||||||||||||||||||||||||||
 Copyright 2023 hamsterbyte
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -362,6 +362,11 @@ namespace hamsterbyte.WFC{
 		private EntropyCoordinates GetParent(int i) => coords[GetParentIndex(i)];
 
 		public bool IsEmpty => size == 0;
+		public bool isHeapFull(){
+			if(size == coords.Length){
+				return true;
+			}else return false;
+		}
 
 		public EntropyCoordinates Peek() => size == 0 ? throw new IndexOutOfRangeException() : coords[0];
 

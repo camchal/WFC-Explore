@@ -73,7 +73,10 @@ public class RegionManager {
 		if (CheckAllComplete(regionCompletionStatus))
 {
 			//VisualizeRegionCoordinates();
-			//GD.Print("All regions completed!");
+			if(CheckAllComplete(regionCompletionStatus)){
+				GD.Print("All regions completed!");
+			}
+			
 			OnAllRegionsComplete();
 }
 		}
@@ -117,7 +120,10 @@ public class RegionManager {
 
    public void CollapseRegions(bool wrap)
 	{
-
+		//resets these 2d arrays
+		//they are used as metrics to see if all regions are done generating
+		regionCompletionStatus = new bool[regionDimensions.X, regionDimensions.Y];
+		regionResults = new WFCResult[regionDimensions.X, regionDimensions.Y];
 		foreach (WFCRegion region in regions)
 		{
 			region.Collapse(wrap);
