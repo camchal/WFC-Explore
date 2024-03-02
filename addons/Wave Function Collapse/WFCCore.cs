@@ -366,6 +366,8 @@ namespace hamsterbyte.WFC{
 			if(size == coords.Length){
 				return true;
 			}else return false;
+		} public int getSize(){
+			return size;
 		}
 
 		public EntropyCoordinates Peek() => size == 0 ? throw new IndexOutOfRangeException() : coords[0];
