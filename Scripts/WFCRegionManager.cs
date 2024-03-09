@@ -24,6 +24,7 @@ public class RegionManager {
 		//dimensions of 2d array
 		regionDimensions.X = _numRegionsRows; regionDimensions.Y = _numRegionsCols;
 		//following regions will be offset by the designated size of regions at beggining(all regions will be same size)
+		//safety push
 		regionOffsetConst.X = regionWidth; regionOffsetConst.Y = regionHeight;
 
 
