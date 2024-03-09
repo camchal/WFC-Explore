@@ -11,8 +11,8 @@ public partial class Test : TileMap{
 	[Export] private int mapHeight = 16;
 	[Export] private int regionWidth = 10;
 	[Export] private int regionHeight = 10;
-	[Export] private int numRegionsRows = 2;
-	[Export] private int numRegionsCols = 3;
+	[Export] private int numRegionsRows = 1;
+	[Export] private int numRegionsCols = 1;
 	[Export(PropertyHint.File)] private string rulePath;
 	[Export] private bool wrap;
 	private TileSetAtlasSource source;
@@ -36,7 +36,10 @@ public partial class Test : TileMap{
 	
 
 	private void GenerateGrid(){
-		if (regionManager.IsAnyRegionBusy()) return; //possible issue here
+		if (regionManager.IsAnyRegionBusy()){
+			GD.Print("BUSY STAHP IT");
+			return; //possible issue here
+		} 
 		ClearTilemap();
 		regionManager.CollapseRegions(wrap);
 

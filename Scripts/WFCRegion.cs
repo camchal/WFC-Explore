@@ -28,12 +28,7 @@ public class WFCRegion {
         }
     }
 
-    public void InitCellCoordinates(int _regionNumber){
-        Offset updateRegionOffset;
-        updateRegionOffset.X = (_regionNumber * regionOffsetConst.X);
-        updateRegionOffset.Y = (_regionNumber * regionOffsetConst.Y);
-        grid.updateCellCoordinates(updateRegionOffset);
-    }
+   
 
     public void ChildGridCompleted(WFCResult _result){
         result = _result; 

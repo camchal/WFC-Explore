@@ -130,44 +130,4 @@ public class RegionManager {
 		}
 	}
 
-/// <summary>
-/// DEBUG FUNCTIONS
-/// </summary>
-	// 		public void LogRegionManagerState()
-	// {
-	// 	GD.Print("RegionManager State:");
-	// 	for (int i = 0; i < regions.Count; i++)
-	// 	{
-	// 		GD.Print($"Region {i}:");
-	// 		GD.Print($"  Completion Status: {regionCompletionStatus[i]}");
-	// 		GD.Print($"  Result: {regionResults[i].Grid}, Success: {regionResults[i].Success}, Attempts: {regionResults[i].Attempts}, ElapsedMilliseconds: {regionResults[i].ElapsedMilliseconds}");
-	// 	}
-	// }
-
-	public void VisualizeRegionCoordinates()
-	{
-		for (int i = 0; i < regions.GetLength(0); i++)
-		{
-			for (int j = 0; j < regions.GetLength(1); j++)
-			{
-				WFCRegion region = regions[i, j];
-				WFCGrid grid = region.GetGrid();
-				GD.Print($"Region ({i},{j}) Grid Coordinates:");
-				WFCCell[,] cells = grid.getCellCoordinates();
-
-				for (int y = 0; y < cells.GetLength(1); y++)
-				{
-					string row = "";
-
-					for (int x = 0; x < cells.GetLength(0); x++)
-					{
-						WFCCell cell = cells[x, y];
-						row += $"({cell.Coordinates.X}, {cell.Coordinates.Y}) ";
-					}
-
-					GD.Print(row);
-				}
-			}
-		}
-	}
 }
