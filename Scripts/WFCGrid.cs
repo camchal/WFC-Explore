@@ -15,11 +15,13 @@
 		public int numattempt = 0;
 		public int pushes;
 		public int pops;
+		public string pushPopHistory;
 		private EntropyCoordinates Observe(){
 			
 			while(!entropyHeap.IsEmpty){
 				EntropyCoordinates coords = entropyHeap.Pop();
 				pops++;
+				pushPopHistory += "o";
 				WFCCell [,] testCells = cells;
 				if(!cells[coords.Coordinates.X, coords.Coordinates.Y].Collapsed){ 
 					return coords;}
@@ -68,6 +70,7 @@
 						GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y})EntropyHeap full: {entropyHeap.isHeapFull()}");
 						GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y})heap size: {dummyHeap.getSize()}");
 						GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) push count is: {pushes} -- pops:{pops}");
+						//GD.Print(pushPopHistory);
 					}
 					
 					entropyHeap.Push(new EntropyCoordinates(){
@@ -75,6 +78,7 @@
 						Entropy = currentCell.Entropy
 					});
 					pushes++;
+					pushPopHistory += "U";
 					//GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST ENTROPYHEAP PUSH");
 				}
 			}
@@ -92,6 +96,7 @@
 				for(int i  = 0; i < _maxAttempts; i++){
 					pushes = 0;
 					pops = 0;
+					pushPopHistory = " ";
 					currentAttempt++;
 					GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) is trying a new attempt");
 					GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) heap initliazed to size is {this.width * this.height}");
@@ -106,6 +111,7 @@
 						Entropy = cell.Entropy
 					});
 					pushes++;
+					pushPopHistory += "U";
 
 					while (remainingUncollapsedCells > 0){
 						EntropyCoordinates e = Observe();
@@ -130,6 +136,7 @@
 					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y}) suceeded");
 					GD.Print($"Attempts: {result.Attempts}");
 					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y})'s final push count: {pushes}-- pops: {pops}");
+					//GD.Print(pushPopHistory);
 				}
 				GD.Print($"Success: {result.Success}");
 		 		parentRegion.ChildGridCompleted(result);
