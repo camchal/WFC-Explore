@@ -22,7 +22,6 @@
 				EntropyCoordinates coords = entropyHeap.Pop();
 				pops++;
 				pushPopHistory += "o";
-				WFCCell [,] testCells = cells;
 				if(!cells[coords.Coordinates.X, coords.Coordinates.Y].Collapsed){ 
 					return coords;}
 			}
@@ -41,6 +40,9 @@
 		}
 		
 		private void Propagate(bool _wrap = true){
+			if(removalUpdates.Count == 0){
+				//stop here bug?
+			}
 			while(removalUpdates.Count > 0){
 				RemovalUpdate update = removalUpdates.Pop();
 				if (update.TileIndex == -1){
@@ -67,10 +69,16 @@
 					
 					if(entropyHeap.isHeapFull()){
 						EntropyHeap dummyHeap = entropyHeap;
+						for(int i = 0; i < 100; i++){
+							EntropyCoordinates dummy = dummyHeap.Pop();
+							if(!cells[dummy.Coordinates.X, dummy.Coordinates.Y].Collapsed){
+								//a cell that isnt collapsed will be here
+							}
+						}
 						GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y})EntropyHeap full: {entropyHeap.isHeapFull()}");
 						GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y})heap size: {dummyHeap.getSize()}");
 						GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) push count is: {pushes} -- pops:{pops}");
-						//GD.Print(pushPopHistory);
+						GD.Print(pushPopHistory);
 					}
 					
 					entropyHeap.Push(new EntropyCoordinates(){
@@ -136,7 +144,7 @@
 					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y}) suceeded");
 					GD.Print($"Attempts: {result.Attempts}");
 					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y})'s final push count: {pushes}-- pops: {pops}");
-					//GD.Print(pushPopHistory);
+					GD.Print(pushPopHistory);
 				}
 				GD.Print($"Success: {result.Success}");
 		 		parentRegion.ChildGridCompleted(result);
