@@ -11,8 +11,8 @@ public partial class Test : TileMap{
 	[Export] private int mapHeight = 16;
 	[Export] private int regionWidth = 10;
 	[Export] private int regionHeight = 10;
-	[Export] private int numRegionsRows = 1;
-	[Export] private int numRegionsCols = 1;
+	[Export] private int numRegionsRows = 2;
+	[Export] private int numRegionsCols = 3;
 	[Export(PropertyHint.File)] private string rulePath;
 	[Export] private bool wrap;
 	private TileSetAtlasSource source;
@@ -48,7 +48,7 @@ public partial class Test : TileMap{
 	public void GenerationComplete(WFCRegion[,] regions){
 		//StartPopulatingTilemap(regions);
 	}
-	private async Task StartPopulatingTilemap(WFCRegion[,] regions, Coordinates _regionDimensions)
+	private void StartPopulatingTilemap(WFCRegion[,] regions, Coordinates _regionDimensions) //await Task - > void
 	{
 		source = TileSet.GetSource(0) as TileSetAtlasSource;
 		
@@ -59,11 +59,14 @@ public partial class Test : TileMap{
 				WFCGrid grid = regions[i,j].GetGrid();
 				GD.Print($"region ({regions[i,j].regionIndex.X},{regions[i,j].regionIndex.Y}) is beginning tilemap population");
 				//offset the animation coordinates
-				// Process animation coordinates
+				// Process animation coordinates  
+				if(grid.AnimationCoordinates.Count != 100){
+							//missing some tiles
+						}
 				while (grid.AnimationCoordinates.Count > 0)
 				{	
 					CallDeferred("SetNextCell", grid.AnimationCoordinates.Dequeue().AsVector2I, i, j);
-					await Task.Delay(5);
+					//await Task.Delay(5);
 				}
 			}
 		}
