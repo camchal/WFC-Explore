@@ -7,22 +7,26 @@
 	using System.Runtime.Serialization;
 	using Godot;
 	using System.Collections.Generic;
+    using System.Linq;
 
-	
-
-	public partial class WFCGrid{
+    public partial class WFCGrid{
 
 		public int numattempt = 0;
+		public int pushes;
+		public int pops;
+		public string pushPopHistory;
 		private EntropyCoordinates Observe(){
 			
 			while(!entropyHeap.IsEmpty){
 				EntropyCoordinates coords = entropyHeap.Pop();
-				WFCCell [,] testCells = cells;
+				pops++;
 				if(!cells[coords.Coordinates.X, coords.Coordinates.Y].Collapsed){ 
 					return coords;}
 			}
-			GD.Print("Heap was emptied!");
-			return EntropyCoordinates.Invalid;
+			//GD.Print("Heap was emptied!");
+			//if code gets here, that means the heap was overflowing. so it was emptied and arrived here. notifying
+			//that a new attempt at generation is needed
+			return new EntropyCoordinates { Entropy = -1, Coordinates = new Coordinates { X = -1, Y = -1 } };
 		}
 		
 		private void Collapse(Coordinates _coords){
@@ -36,6 +40,9 @@
 		}
 		
 		private void Propagate(bool _wrap = true){
+			if(removalUpdates.Count == 0){
+				//stop here bug?
+			}
 			while(removalUpdates.Count > 0){
 				RemovalUpdate update = removalUpdates.Pop();
 				if (update.TileIndex == -1){
@@ -59,60 +66,37 @@
 							currentCell.RemoveOption(o);
 						}
 					}
-							//GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST CARDINALS");
-							//GD.Print($"EntropyHeap size: {entropyHeap.getSize()}");
-							if(entropyHeap.isHeapFull()){
-								EntropyHeap dummyHeap = entropyHeap;
-								GD.Print($"heap size: {dummyHeap.getSize()}");
-
-								GD.Print($"EntropyHeap full: {entropyHeap.isHeapFull()}");
-
-								HashSet<Vector2> seenCoordinates = new HashSet<Vector2>();
-								List<Vector2> repeatedCoordinates = new List<Vector2>();
-								int heapSize = dummyHeap.getSize();
-								for (int i = 0; i < heapSize; i++) {
-									EntropyCoordinates e = dummyHeap.Pop();
-									Vector2 currentCoordinates = new Vector2(e.Coordinates.X, e.Coordinates.Y);
-									if (seenCoordinates.Contains(currentCoordinates)) {
-										repeatedCoordinates.Add(currentCoordinates);
-									} else {
-										seenCoordinates.Add(currentCoordinates);
-									}
-									
-								}
-								foreach (Vector2 repeatedCoordinate in repeatedCoordinates) {
-										GD.Print($"Repeated coordinate: ({repeatedCoordinate.X}, {repeatedCoordinate.Y})");
-									}
+					
+					if(entropyHeap.isHeapFull()){
+						entropyHeap = new EntropyHeap(Width * Height);
 					}
 					
 					entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = currentCell.Coordinates,
 						Entropy = currentCell.Entropy
 					});
-					//GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST ENTROPYHEAP PUSH");
+					pushes++;
+					pushPopHistory += "U";
 				}
 			}
 		}
 		
-		public void updateCellCoordinates(Offset regionOffset){
-			// GD.Print($"Updating Region {parentRegion.regionNumber}'s cells");
-			for(int x = 0; x < width; x++){
-				for(int y = 0 ; y < height; y++){
-				//cells[x, y].UpdateCoordinates(regionOffset.X, regionOffset.Y, parentRegion.regionNumber);
-				}
-			}
-		}
+		
 		public WFCCell[,] getCellCoordinates(){
 			return cells;
 		}
 		public void TryCollapse(bool _wrap = true, int _maxAttempts = 100){
 				Reset(true);
+				
 				Busy = true;
 				Stopwatch timer = Stopwatch.StartNew();
 				for(int i  = 0; i < _maxAttempts; i++){
+					pushes = 0;
+					pops = 0;
+					pushPopHistory = " ";
 					currentAttempt++;
-					GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} is trying a new attempt");
-					GD.Print($"heap size is {this.width * this.height}");
+					GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) has begun a generation attempt");
+					
 					if(entropyHeap.getSize() != 0){
 						GD.Print("entropy heap isnt empty before new attempt ");
 					}
@@ -122,20 +106,22 @@
 						Coordinates = cell.Coordinates,
 						Entropy = cell.Entropy
 					});
-					//GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} PUSHED NEW COORDS");
+					pushes++;
+					pushPopHistory += "U";
 
 					while (remainingUncollapsedCells > 0){
 						EntropyCoordinates e = Observe();
-						//GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST OBSERVE");
+						if (e.Coordinates.X == -1 && e.Coordinates.Y == -1){
+							validCollapse = false;
+ 							break;
+						}
 						Collapse(e.Coordinates);
-						//GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST COLLAPSE");
 						Propagate(_wrap);
-						//GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST PROPGATE");
 					}
-					//GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST WHILE LOOP");
 					if(!validCollapse && i < _maxAttempts - 1){
 						Reset();
 					} else break;
+					
 				}
 				timer.Stop();
 				WFCResult result = new(){
@@ -144,16 +130,16 @@
 					Attempts = currentAttempt,
 					ElapsedMilliseconds = timer.ElapsedMilliseconds
 				};
-				//GD.Print($"region {parentRegion.regionIndex.Y} got to the end");
 				if(!result.Success){
 					ShowResultMetrics(result);
 				}
 				else{
-					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y} suceeded");
+					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y}) suceeded");
 					GD.Print($"Attempts: {result.Attempts}");
+					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y})'s final push count: {pushes}-- pops: {pops}");
+					GD.Print("------------------------------------");
 				}
-				GD.Print($"Success: {result.Success}");
-				parentRegion.ChildGridCompleted(result);
+		 		parentRegion.ChildGridCompleted(result);
 
 				Busy = false;
 		}

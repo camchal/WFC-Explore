@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using hamsterbyte.WFC;
+using System.Runtime.CompilerServices;
 
 public partial class Test : TileMap{
 	public event Action<WFCRegion[,],Coordinates> AllRegionsComplete;
@@ -36,7 +37,10 @@ public partial class Test : TileMap{
 	
 
 	private void GenerateGrid(){
-		if (regionManager.IsAnyRegionBusy()) return; //possible issue here
+		if (regionManager.IsAnyRegionBusy()){
+			GD.Print("BUSY STAHP IT");
+			return; //possible issue here
+		} 
 		ClearTilemap();
 		regionManager.CollapseRegions(wrap);
 
@@ -45,22 +49,20 @@ public partial class Test : TileMap{
 	public void GenerationComplete(WFCRegion[,] regions){
 		//StartPopulatingTilemap(regions);
 	}
-	private async Task StartPopulatingTilemap(WFCRegion[,] regions, Coordinates _regionDimensions)
+	private async Task StartPopulatingTilemap(WFCRegion[,] regions, Coordinates _regionDimensions) //await Task - > void
 	{
 		source = TileSet.GetSource(0) as TileSetAtlasSource;
-		
-
 		
 		for(int i = 0; i < _regionDimensions.X; i++){
 			for(int j = 0; j < _regionDimensions.Y; j++){
 				WFCGrid grid = regions[i,j].GetGrid();
 				GD.Print($"region ({regions[i,j].regionIndex.X},{regions[i,j].regionIndex.Y}) is beginning tilemap population");
 				//offset the animation coordinates
-				// Process animation coordinates
+				// Process animation coordinates  
 				while (grid.AnimationCoordinates.Count > 0)
 				{	
 					CallDeferred("SetNextCell", grid.AnimationCoordinates.Dequeue().AsVector2I, i, j);
-					await Task.Delay(5);
+					await Task.Delay(1);
 				}
 			}
 		}
