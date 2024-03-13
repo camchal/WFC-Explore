@@ -20,11 +20,12 @@
 			while(!entropyHeap.IsEmpty){
 				EntropyCoordinates coords = entropyHeap.Pop();
 				pops++;
-				pushPopHistory += "o";
 				if(!cells[coords.Coordinates.X, coords.Coordinates.Y].Collapsed){ 
 					return coords;}
 			}
-			GD.Print("Heap was emptied!");
+			//GD.Print("Heap was emptied!");
+			//if code gets here, that means the heap was overflowing. so it was emptied and arrived here. notifying
+			//that a new attempt at generation is needed
 			return new EntropyCoordinates { Entropy = -1, Coordinates = new Coordinates { X = -1, Y = -1 } };
 		}
 		
@@ -76,7 +77,6 @@
 					});
 					pushes++;
 					pushPopHistory += "U";
-					//GD.Print($"region {parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y} POST ENTROPYHEAP PUSH");
 				}
 			}
 		}
@@ -95,14 +95,12 @@
 					pops = 0;
 					pushPopHistory = " ";
 					currentAttempt++;
-					GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) is trying a new attempt");
-					//GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) heap initliazed to size is {this.width * this.height}");
-					//GD.Print($"size of heap is{entropyHeap.getSize()} and num pushes is { pushes} and pops {pops}");
+					GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) has begun a generation attempt");
+					
 					if(entropyHeap.getSize() != 0){
 						GD.Print("entropy heap isnt empty before new attempt ");
 					}
 					WFCCell cell = cells.Random();
-					//WFCCell cell = cells[0,0];
 
 					entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = cell.Coordinates,
@@ -122,12 +120,8 @@
 					}
 					if(!validCollapse && i < _maxAttempts - 1){
 						Reset();
-					} else{
-						if(AnimationCoordinates.Count != 100){
-							//missing some tiles
-						} 
-						break;
-					}
+					} else break;
+					
 				}
 				timer.Stop();
 				WFCResult result = new(){
@@ -143,10 +137,8 @@
 					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y}) suceeded");
 					GD.Print($"Attempts: {result.Attempts}");
 					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y})'s final push count: {pushes}-- pops: {pops}");
-					//GD.Print(pushPopHistory);
 					GD.Print("------------------------------------");
 				}
-				//GD.Print($"Success: {result.Success}");
 		 		parentRegion.ChildGridCompleted(result);
 
 				Busy = false;
