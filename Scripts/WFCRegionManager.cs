@@ -118,6 +118,7 @@ public class RegionManager {
 		}
 		return false;
 	}
+	
 
    public void CollapseRegions(bool wrap)
 	{

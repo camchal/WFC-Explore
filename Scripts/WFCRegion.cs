@@ -8,12 +8,15 @@ using System.Security.Cryptography.X509Certificates;
 public class WFCRegion {
     private WFCGrid grid;
     private WFCResult result;
+    public bool hasUpNeighbor;
+    public bool hasLeftNeighbor;
     public event Action<WFCResult,Coordinates> onRegionComplete; // Define the onComplete event
 
     public Coordinates regionIndex;
     public Offset regionOffsetConst;
 
      public WFCRegion(int width, int height, List<WFCRule> rules, Coordinates _regionIndex) {
+        EvaluateNeighbors();//determine if border needs to be adjusted
         grid = new WFCGrid(width, height, rules, this);
 
         //const
@@ -23,9 +26,6 @@ public class WFCRegion {
         regionIndex.X = _regionIndex.X; 
         regionIndex.Y = _regionIndex.Y;
 
-        if(regionOffsetConst.X != 0 || regionOffsetConst.Y !=0){
-            //REMEMBER I USED TO OFFSET COORDS HERE
-        }
     }
 
    
@@ -55,4 +55,10 @@ public class WFCRegion {
      public bool IsBusy() {
         return grid.Busy;
     }
+    public void EvaluateNeighbors(){
+		//if either is 0, set that value to false, otherwise its true
+		hasUpNeighbor = regionIndex.X != 0;
+		hasLeftNeighbor = regionIndex.Y != 0;
+
+	}
 }
