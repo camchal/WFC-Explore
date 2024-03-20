@@ -16,15 +16,15 @@ public class WFCRegion {
     public Offset regionOffsetConst;
 
      public WFCRegion(int width, int height, List<WFCRule> rules, Coordinates _regionIndex) {
-        EvaluateNeighbors();//determine if border needs to be adjusted
-        grid = new WFCGrid(width, height, rules, this);
-
-        //const
+         //const
         regionOffsetConst.X = width;
         regionOffsetConst.Y = height;
         //were the region resides in the overall regions 2darray
         regionIndex.X = _regionIndex.X; 
         regionIndex.Y = _regionIndex.Y;
+
+        EvaluateNeighbors();//determine if border needs to be adjusted
+        grid = new WFCGrid(width, height, rules, this);
 
     }
 
@@ -56,9 +56,8 @@ public class WFCRegion {
         return grid.Busy;
     }
     public void EvaluateNeighbors(){
-		//if either is 0, set that value to false, otherwise its true
-		hasUpNeighbor = regionIndex.X != 0;
-		hasLeftNeighbor = regionIndex.Y != 0;
-
+        //if either is 0, set that value to false, otherwise it's true
+        hasUpNeighbor = regionIndex.X != 0;
+        hasLeftNeighbor = regionIndex.Y != 0;
 	}
 }

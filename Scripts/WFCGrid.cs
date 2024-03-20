@@ -95,7 +95,7 @@
 					pops = 0;
 					pushPopHistory = " ";
 					currentAttempt++;
-					GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) has begun a generation attempt");
+					//GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) has begun a generation attempt");
 					
 					if(entropyHeap.getSize() != 0){
 						GD.Print("entropy heap isnt empty before new attempt ");
@@ -134,9 +134,9 @@
 					ShowResultMetrics(result);
 				}
 				else{
-					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y}) suceeded");
-					GD.Print($"Attempts: {result.Attempts}");
-					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y})'s final push count: {pushes}-- pops: {pops}");
+					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y}) -- UpperNeighbor:{parentRegion.hasUpNeighbor}   LeftNeighbor:{parentRegion.hasLeftNeighbor} ");
+					GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y}) succeeded. Attempts: {result.Attempts}");
+					//GD.Print($"Region ({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y})'s final push count: {pushes}-- pops: {pops}");
 					GD.Print("------------------------------------");
 				}
 		 		parentRegion.ChildGridCompleted(result);
