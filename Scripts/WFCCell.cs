@@ -44,6 +44,11 @@ namespace hamsterbyte.WFC{
 			//if returns -1 a contradiction occured
 			return -1;
 		}
+		//used in constructor
+		public void DetermineBorderCells(){
+			upBorcell= Coordinates.X == 0;
+    		leftBorCell = Coordinates.Y == 0;
+		}
 
 
 		public int Collapse(){

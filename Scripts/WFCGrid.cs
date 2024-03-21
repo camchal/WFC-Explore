@@ -111,9 +111,9 @@
 
 					while (remainingUncollapsedCells > 0){
 						EntropyCoordinates e = Observe();
-						if (e.Coordinates.X == -1 && e.Coordinates.Y == -1){
+						if (e.Coordinates.X == -1 && e.Coordinates.Y == -1){ //handle heap overflow bug
 							validCollapse = false;
- 							break;
+ 							break;//reset
 						}
 						Collapse(e.Coordinates);
 						Propagate(_wrap);

@@ -69,10 +69,14 @@ namespace hamsterbyte.WFC{
 		private int sumOfPossibleFrequencies;
 		private double sumOfPossibleFrequencyLogFrequencies;
 		private readonly double entropyNoise;
+		public bool leftBorCell{ get; private set; }
+		public bool upBorcell{ get; private set; } // is cell on border of grid?
 
 
 		public WFCCell(Coordinates _coordinates, int[] _frequencies){
 			Coordinates = _coordinates;
+			//if coords are on borer call appropriate function
+			DetermineBorderCells();
 			rawFrequencies = _frequencies;
 			logFrequencies = new double[rawFrequencies.Length];
 			Options = new bool[rawFrequencies.Length];
