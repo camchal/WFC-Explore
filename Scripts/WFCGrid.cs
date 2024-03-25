@@ -97,12 +97,15 @@
 						currentCell = new WFCCell(new Coordinates(-1, -1), new int[0]);
 						break;
 					}
-
 					if (currentCell.Coordinates.X == -1) continue;  //requested a cell from aregion that doesnt exist
 					if(currentCell.Collapsed) continue;
 					for(int o = 0; o < adjacencyRules.GetLength(2); o++){
 						if(adjacencyRules[update.TileIndex, d, o] == 0 && currentCell.Options[o]){
 							currentCell.RemoveOption(o);
+							if(borrowed){
+								GD.Print($"Cell({currentCell.Coordinates.X},{currentCell.Coordinates.Y})'s had an option removed ");
+							}
+							
 						}
 					}
 					
