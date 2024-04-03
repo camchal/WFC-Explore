@@ -46,7 +46,7 @@ namespace hamsterbyte.WFC{
 		}
 		//used in constructor
 		public void DetermineBorderCells(){
-			upBorcell= Coordinates.X == 0;
+			upBorCell= Coordinates.X == 0;
     		leftBorCell = Coordinates.Y == 0;
 		}
 

@@ -68,7 +68,7 @@
 						if(current.X < 0 || current.Y < 0) continue;//SKIP CELLS TO THE LEFT, THEY ARE ALREADY GENERATED
 						current = current.Wrap(Width, Height);
 						if(tempCurrent != current){ //it wrapped! now find if it wraps left or right
-							if( tempCurrent.X != current.X) {cellType = 'l';}//lower region
+							if( tempCurrent.X != current.X) {cellType = 'l';}//lower region  //possible bug
 							else if(tempCurrent.Y != current.Y){cellType = 'r';} //right region
 						}
 						
@@ -90,6 +90,8 @@
 						case 'r'://right
 						borrowed = true;
 							currentCell = parentRegion.getCellFromRegionManager(cellType, current.X, current.Y);
+							GD.Print($"region {parentRegion.regionIndex} requestd a cell from region {parentRegion.lowerNeighbor}");
+							GD.Print($"Original {update.Coordinates.X},{update.Coordinates.Y} needed cell { currentCell.Coordinates.X },{ currentCell.Coordinates.Y}");
 						break;
 						 default:
 						// Handle unexpected cellType values
@@ -99,13 +101,18 @@
 					}
 					if (currentCell.Coordinates.X == -1) continue;  //requested a cell from aregion that doesnt exist
 					if(currentCell.Collapsed) continue;
+
+					List<int> indexesToRemove = new List<int>(); //for borrowed cells only
+
 					for(int o = 0; o < adjacencyRules.GetLength(2); o++){
 						if(adjacencyRules[update.TileIndex, d, o] == 0 && currentCell.Options[o]){
 							currentCell.RemoveOption(o);
-							if(borrowed){
-								GD.Print($"Cell({currentCell.Coordinates.X},{currentCell.Coordinates.Y})'s had an option removed ");
-							}
-							
+							if (borrowed){
+									indexesToRemove.Add(o); //create a list that will be passed to foreign cells grid,
+															// with each reset, the list will be iterated and all cell options updated
+								}else{
+									currentCell.RemoveOption(o);
+								}
 						}
 					}
 					
@@ -113,11 +120,13 @@
 						entropyHeap = new EntropyHeap(Width * Height);
 					}
 					if(borrowed == false){
-					entropyHeap.Push(new EntropyCoordinates(){
+
+					}else{entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = currentCell.Coordinates,
 						Entropy = currentCell.Entropy
 					});
 					}
+				
 
 					pushes++;
 					pushPopHistory += "U";

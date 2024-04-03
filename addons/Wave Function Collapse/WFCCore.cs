@@ -69,8 +69,9 @@ namespace hamsterbyte.WFC{
 		private int sumOfPossibleFrequencies;
 		private double sumOfPossibleFrequencyLogFrequencies;
 		private readonly double entropyNoise;
+		public WFCRegion parentRegion{ get; private set;}
 		public bool leftBorCell{ get; private set; }
-		public bool upBorcell{ get; private set; } // is cell on border of grid?
+		public bool upBorCell{ get; private set; } // is cell on border of grid?
 
 
 		public WFCCell(Coordinates _coordinates, int[] _frequencies){
@@ -183,6 +184,7 @@ namespace hamsterbyte.WFC{
 				rawFrequencies[i] = _rules[i].Frequency;
 			}
 
+			//making initial cells
 			adjacencyRules = WFCRule.ToAdjacencyRules(_rules);
 			for (int x = 0; x < _width; x++){
 				for (int y = 0; y < _height; y++){
