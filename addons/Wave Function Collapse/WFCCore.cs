@@ -32,6 +32,13 @@ namespace hamsterbyte.WFC{
 	using System.Text;
 	using System.Text.Json;
 
+	/* Struct used to keep track of the border cells for each region*/
+	public struct BorderCellUpdate{
+		public int X;
+		public int Y;
+		public List<int> OptionsRemovedList;
+	}
+
 	/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	DELEGATES => REQUIRED DELEGATES FOR CORE FUNCTIONALITY
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -84,6 +91,7 @@ namespace hamsterbyte.WFC{
 			System.Array.Fill(Options, true);
 			entropyNoise = WFCGrid.Random.NextDouble() * .0001;
 			PrecalculateFrequencies();
+			
 		}
 		
 		
@@ -114,6 +122,7 @@ namespace hamsterbyte.WFC{
 		private readonly int[,,] adjacencyRules;
 		private readonly Stack<RemovalUpdate> removalUpdates;
 		private readonly bool suppressNotifications;
+		public List<BorderCellUpdate> bCellUpdates; //list of cells this grid needs to update each iteration
 
 		#endregion
 
@@ -175,6 +184,7 @@ namespace hamsterbyte.WFC{
 		public WFCGrid(int _width, int _height, List<WFCRule> _rules,WFCRegion _parentRegion, bool _suppressNotifications = false){
 			onComplete += NotifyComplete;
 	
+			bCellUpdates = new List<BorderCellUpdate>();
 			parentRegion = _parentRegion;
 			suppressNotifications = _suppressNotifications;
 			cells = new WFCCell[_width, _height];

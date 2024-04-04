@@ -124,17 +124,30 @@ public class RegionManager {
 	public WFCRegion GetRegion(Coordinates _regionIndex) {
 		return regions[_regionIndex.X,_regionIndex.Y];
 	}
-	public WFCCell getCellFromRegion(Coordinates _requestedRegion, int row, int col){
-		  // Check if the requested region is within the bounds of the regions array
+	// public WFCCell getCellFromRegion(Coordinates _requestedRegion, int row, int col){
+	// 	  // Check if the requested region is within the bounds of the regions array
+    // if (_requestedRegion.X < 0 || _requestedRegion.X >= regions.GetLength(0) ||
+    //     _requestedRegion.Y < 0 || _requestedRegion.Y >= regions.GetLength(1))
+    // {
+    //     // Return a default WFCCell if the requested region is outside the array bounds
+    //     return new WFCCell(new Coordinates(-1, -1), new int[0]);
+    // }
+
+    // // Get the cell from the requested region
+    // return regions[_requestedRegion.X, _requestedRegion.Y].GetGrid().getCell(row, col);
+	// }
+	public void AppendBorCellUpdate(Coordinates _requestedRegion, BorderCellUpdate _borCellUpdate){
+	  // Check if the requested region is within the bounds of the regions array
     if (_requestedRegion.X < 0 || _requestedRegion.X >= regions.GetLength(0) ||
         _requestedRegion.Y < 0 || _requestedRegion.Y >= regions.GetLength(1))
     {
-        // Return a default WFCCell if the requested region is outside the array bounds
-        return new WFCCell(new Coordinates(-1, -1), new int[0]);
+        // Return  if the requested region is outside the region array bounds
+        return;
     }
 
-    // Get the cell from the requested region
-    return regions[_requestedRegion.X, _requestedRegion.Y].GetGrid().getCell(row, col);
+    // send update to the specified region
+		regions[_requestedRegion.X, _requestedRegion.Y].RegionAppendBorCellUpdate(_borCellUpdate);
+		return;
 	}
 
 	public bool IsAnyRegionBusy() {

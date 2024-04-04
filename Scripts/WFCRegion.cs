@@ -61,7 +61,23 @@ public class WFCRegion {
      public bool IsBusy() {
         return grid.Busy;
     }
-    public WFCCell getCellFromRegionManager(char _cellType, int x, int y){
+    // public WFCCell getCellFromRegionManager(char _cellType, int x, int y){
+    //     Coordinates requestedRegion = new Coordinates(-1,-1);
+    //     switch(_cellType){
+    //     case 'l': //lower
+    //         requestedRegion = lowerNeighbor;
+    //     break;
+    //     case 'r'://right
+    //         requestedRegion = rightNeighbor;
+    //     break;
+    //     }
+    //     if(requestedRegion.X == -1){ //there is no region there
+            
+    //         return new WFCCell(requestedRegion, new int [0]);
+    //     }
+    //     else return parentRegionManager.getCellFromRegion(requestedRegion, x, y);
+    // }
+    public void SendBorderCellUpdate(char _cellType, BorderCellUpdate _borCellUpdate){
         Coordinates requestedRegion = new Coordinates(-1,-1);
         switch(_cellType){
         case 'l': //lower
@@ -72,10 +88,13 @@ public class WFCRegion {
         break;
         }
         if(requestedRegion.X == -1){ //there is no region there
-            
-            return new WFCCell(requestedRegion, new int [0]);
+            return;
         }
-        else return parentRegionManager.getCellFromRegion(requestedRegion, x, y);
+        //reguest region manager to send the update to the desired grid
+        else parentRegionManager.AppendBorCellUpdate(requestedRegion, _borCellUpdate);
+    }
+    public void RegionAppendBorCellUpdate(BorderCellUpdate _borCellUpdate){
+        grid.updateBorderCellList(_borCellUpdate);
     }
     public void EvaluateNeighbors(){
     // Store the index of the lower neighbor if it exists, otherwise (-1, -1)

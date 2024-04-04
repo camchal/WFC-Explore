@@ -15,8 +15,12 @@
 		public int pushes;
 		public int pops;
 		public string pushPopHistory;
+		
 		public WFCCell getCell(int row, int col){
 			return cells[row,col];
+		}
+		public void updateBorderCellList(BorderCellUpdate _borCellUpdate){
+			bCellUpdates.Add(_borCellUpdate);
 		}
 		private EntropyCoordinates Observe(){
 			
@@ -62,10 +66,7 @@
 					Coordinates current = cardinals[d] + update.Coordinates;
 					tempCurrent = current;
 					if (_wrap){
-						if(update.Coordinates.X == 0 && update.Coordinates.Y == 0 && d ==0){
-							//we are on top row, check coords
-						}
-						if(current.X < 0 || current.Y < 0) continue;//SKIP CELLS TO THE LEFT, THEY ARE ALREADY GENERATED
+						if(current.X < 0 || current.Y < 0) continue;//SKIP CELLS TO THE LEFT and UP , THEY ARE ALREADY GENERATED
 						current = current.Wrap(Width, Height);
 						if(tempCurrent != current){ //it wrapped! now find if it wraps left or right
 							if( tempCurrent.X != current.X) {cellType = 'l';}//lower region  //possible bug
@@ -77,38 +78,33 @@
 					}
 
 					WFCCell currentCell;
-					switch(cellType){
-						case 'u': //unchanged
-							currentCell = cells[current.X, current.Y];
-						break;
-						case 'l': //lower
-							currentCell = parentRegion.getCellFromRegionManager(cellType, current.X, current.Y);
-							borrowed = true;
-							GD.Print($"region {parentRegion.regionIndex} requestd a cell from region {parentRegion.lowerNeighbor}");
-							GD.Print($"Original {update.Coordinates.X},{update.Coordinates.Y} needed cell { currentCell.Coordinates.X },{ currentCell.Coordinates.Y}");
-						break;
-						case 'r'://right
-						borrowed = true;
-							currentCell = parentRegion.getCellFromRegionManager(cellType, current.X, current.Y);
-							GD.Print($"region {parentRegion.regionIndex} requestd a cell from region {parentRegion.lowerNeighbor}");
-							GD.Print($"Original {update.Coordinates.X},{update.Coordinates.Y} needed cell { currentCell.Coordinates.X },{ currentCell.Coordinates.Y}");
-						break;
-						 default:
-						// Handle unexpected cellType values
-						// For example, you can throw an exception or set currentCell to a default value
-						currentCell = new WFCCell(new Coordinates(-1, -1), new int[0]);
-						break;
+					BorderCellUpdate borCellUpdate= new BorderCellUpdate();
+					if (cellType == 'u')
+					{
+						currentCell = cells[current.X, current.Y];
 					}
-					if (currentCell.Coordinates.X == -1) continue;  //requested a cell from aregion that doesnt exist
+					else//its borrowed from another region
+					{
+						borCellUpdate.X = current.X; borCellUpdate.Y = current.Y;
+						borCellUpdate.OptionsRemovedList = new List<int>();
+						borrowed = true;
+						//get list of region it needs to go to
+						
+						//currentCell = parentRegion.getCellFromRegionManager(cellType, current.X, current.Y);
+						currentCell = new WFCCell(new Coordinates(-1,-1), new int [0]);//dummy cell
+						GD.Print($"region {parentRegion.regionIndex} requested a cell from region {parentRegion.lowerNeighbor}");
+						GD.Print($"Original {update.Coordinates.X},{update.Coordinates.Y} needed cell {currentCell.Coordinates.X},{currentCell.Coordinates.Y}");
+					}
+					//if (currentCell.Coordinates.X == -1) continue;  //requested a cell from aregion that doesnt exist
 					if(currentCell.Collapsed) continue;
 
-					List<int> indexesToRemove = new List<int>(); //for borrowed cells only
+					//List<int> indexesToRemove = new List<int>(); //for borrowed cells only
 
 					for(int o = 0; o < adjacencyRules.GetLength(2); o++){
 						if(adjacencyRules[update.TileIndex, d, o] == 0 && currentCell.Options[o]){
 							currentCell.RemoveOption(o);
 							if (borrowed){
-									indexesToRemove.Add(o); //create a list that will be passed to foreign cells grid,
+									borCellUpdate.OptionsRemovedList.Add(o); //create a list that will be passed to foreign cells grid,
 															// with each reset, the list will be iterated and all cell options updated
 								}else{
 									currentCell.RemoveOption(o);
@@ -119,8 +115,11 @@
 					if(entropyHeap.isHeapFull()){
 						entropyHeap = new EntropyHeap(Width * Height);
 					}
-					if(borrowed == false){
-
+					if(borrowed){
+						//sent update to corresponding region
+						parentRegion.SendBorderCellUpdate(cellType,borCellUpdate);
+						//need to create funciton in wfcgrid that will iterate through its update list and push the corresponding cells 
+						//to entropy heap to be handled.
 					}else{entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = currentCell.Coordinates,
 						Entropy = currentCell.Entropy
