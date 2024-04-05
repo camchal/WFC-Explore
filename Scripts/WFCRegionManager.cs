@@ -147,6 +147,7 @@ public class RegionManager {
 
     // send update to the specified region
 		regions[_requestedRegion.X, _requestedRegion.Y].RegionAppendBorCellUpdate(_borCellUpdate);
+		GD.Print($"region ({_requestedRegion.X}, {_requestedRegion.Y}) had cell({_borCellUpdate.X},{_borCellUpdate.Y}) updated with {_borCellUpdate.OptionsRemovedList.Count} options removed");
 		return;
 	}
 
