@@ -74,9 +74,9 @@ public partial class Test : TileMap{
 		WFCGrid grid = regionManager.GetRegion(tempIndex).GetGrid(); // Assuming GetGrid() method in WFCRegion
 		
 		int tileIndex = grid[c.X, c.Y].TileIndex;
-		if(c.Y == 0){
-			GD.Print($"Cell({c.X},{c.Y}) set its tile as tile: {tileIndex}");
-		}
+		// if(c.Y == 0){
+		// 	GD.Print($"Cell({c.X},{c.Y}) set its tile as tile: {tileIndex}");
+		// }
 		if (tileIndex == -1) return; // Assuming -1 indicates no tile
 		Offset regionOffset = regionManager.GetRegion(tempIndex).GetOffset();
 		

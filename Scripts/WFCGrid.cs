@@ -124,6 +124,7 @@
 					{
 						borCellUpdate.X = current.X; borCellUpdate.Y = current.Y;
 						borCellUpdate.OptionsRemovedList = new List<int>();
+						borCellUpdate.determiningTileIndex = update.TileIndex;
 						borrowed = true;
 						//get list of region it needs to go to
 						
@@ -154,6 +155,15 @@
 					if(borrowed){
 						//sent update to corresponding region
 						parentRegion.SendBorderCellUpdate(cellType,borCellUpdate);
+						StringBuilder notRemovedIndexes = new StringBuilder();
+						for (int i = 0; i < 14; i++)
+							{
+								if (!borCellUpdate.OptionsRemovedList.Contains(i))
+								{
+									notRemovedIndexes.Append(i + " ");
+								}
+							}
+						GD.Print($"Indexes not removed for cell ({borCellUpdate.X}, {borCellUpdate.Y}): {notRemovedIndexes}");
 						//need to create funciton in wfcgrid that will iterate through its update list and push the corresponding cells 
 						//to entropy heap to be handled.
 					}else{
