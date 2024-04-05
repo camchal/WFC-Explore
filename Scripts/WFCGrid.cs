@@ -8,7 +8,7 @@
 	using Godot;
 	using System.Collections.Generic;
     using System.Linq;
-
+	using System.Text;
     public partial class WFCGrid{
 
 		public int numattempt = 0;
@@ -29,9 +29,14 @@
 			{
 				// Access the cell at the specified coordinates
         		var currentCell = cells[update.X, update.Y];
+
+
 				 foreach (var option in update.OptionsRemovedList)
 					{
-						currentCell.RemoveOption(option);
+						if (currentCell.Options[option]) //if its true then remove it, if its somehow false then ignore
+							{
+								currentCell.RemoveOption(option);
+							}
 					}
 					entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = currentCell.Coordinates,
@@ -39,6 +44,16 @@
 					});
 				// Sample functionality: Print the X, Y, and size of OptionsRemovedList
 				GD.Print($"Processing update for cell ({update.X}, {update.Y}) with {update.OptionsRemovedList.Count} options removed");
+				StringBuilder notRemovedIndexes = new StringBuilder();
+				for (int i = 0; i < 14; i++)
+					{
+						if (!update.OptionsRemovedList.Contains(i))
+						{
+							notRemovedIndexes.Append(i + " ");
+						}
+					}
+				GD.Print($"Indexes not removed for cell ({update.X}, {update.Y}): {notRemovedIndexes}");
+
 			}
 		}
 		private EntropyCoordinates Observe(){
@@ -57,6 +72,9 @@
 		
 		private void Collapse(Coordinates _coords){
 			int collapsedIndex = cells[_coords.X, _coords.Y].Collapse();//returns collapsed index
+			if(_coords.Y == 0){
+				GD.Print($"Cell({_coords.X},{_coords.Y}) collapsed as tile index { collapsedIndex}");
+			}
 			AnimationCoordinates.Enqueue(_coords);
 			removalUpdates.Push(new RemovalUpdate(){
 				Coordinates = _coords,
@@ -111,8 +129,8 @@
 						
 						//currentCell = parentRegion.getCellFromRegionManager(cellType, current.X, current.Y);
 						currentCell = new WFCCell(new Coordinates(-1,-1), rawFrequencies);//dummy cell
-						GD.Print($"region {parentRegion.regionIndex} requested a cell from region {parentRegion.lowerNeighbor}");
-						GD.Print($"Original {update.Coordinates.X},{update.Coordinates.Y} needed cell {currentCell.Coordinates.X},{currentCell.Coordinates.Y}");
+						//GD.Print($"region {parentRegion.regionIndex} requested a cell from region {parentRegion.lowerNeighbor}");
+						//GD.Print($"Original {update.Coordinates.X},{update.Coordinates.Y} needed cell {currentCell.Coordinates.X},{currentCell.Coordinates.Y}");
 					}
 					//if (currentCell.Coordinates.X == -1) continue;  //requested a cell from aregion that doesnt exist
 					if(currentCell.Collapsed) continue;
@@ -138,7 +156,12 @@
 						parentRegion.SendBorderCellUpdate(cellType,borCellUpdate);
 						//need to create funciton in wfcgrid that will iterate through its update list and push the corresponding cells 
 						//to entropy heap to be handled.
-					}else{entropyHeap.Push(new EntropyCoordinates(){
+					}else{
+						if (currentCell.Entropy < -100 && currentCell.Entropy > 100){
+							//stop
+						}
+
+						entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = currentCell.Coordinates,
 						Entropy = currentCell.Entropy
 					});
@@ -173,7 +196,7 @@
 					if(entropyHeap.getSize() != 0){
 						GD.Print("entropy heap isnt empty before new attempt ");
 					}
-					WFCCell cell = cells.Random();
+					WFCCell cell = cells.Random(); //needed?
 
 					entropyHeap.Push(new EntropyCoordinates(){
 						Coordinates = cell.Coordinates,

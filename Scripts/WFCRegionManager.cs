@@ -163,7 +163,13 @@ public class RegionManager {
 		}
 		return false;
 	}
-	
+	public void ResetRegionBorderUpdates(){
+		foreach (WFCRegion region in regions)
+		{
+			region.GetGrid().bCellUpdates = new List<BorderCellUpdate>(); //reset their lists
+		}
+		
+	}
 
    public void CollapseRegions(bool wrap)
 	{
@@ -171,8 +177,10 @@ public class RegionManager {
 		//they are used as metrics to see if all regions are done generating
 		regionCompletionStatus = new bool[regionDimensions.X, regionDimensions.Y];
 		regionResults = new WFCResult[regionDimensions.X, regionDimensions.Y];
+		ResetRegionBorderUpdates();
 		foreach (WFCRegion region in regions)
 		{
+			
 			region.Collapse(wrap);
 		}
 	}

@@ -1,10 +1,13 @@
 namespace hamsterbyte.WFC{
 	using System;
-	using System.Linq;
+    using System.Collections.Generic;
+    using System.Linq;
 	using System.Runtime.InteropServices;
 	using Godot;
 
 	public partial class WFCCell{
+		private int numTimesRemovedOption = 0;
+		private List<int> IndexesRemoved = new List<int>();
 		private void PrecalculateFrequencies(){
 			for( int i = 0; i< rawFrequencies.Length; i++){
 				logFrequencies[i] = Math.Log2(rawFrequencies[i]);
@@ -23,6 +26,8 @@ namespace hamsterbyte.WFC{
 		}
 
 		public void RemoveOption(int i){
+			numTimesRemovedOption++;
+			IndexesRemoved.Add(i);
 			Options[i] = false;
 			sumOfPossibleFrequencies -= rawFrequencies[i];
 			sumOfPossibleFrequencyLogFrequencies -= logFrequencies[i];
@@ -50,11 +55,12 @@ namespace hamsterbyte.WFC{
 
 		private int WeightedRandomIndex(){
 			int pointer = 0;
-			if (sumOfPossibleFrequencies <= 0)
-			{
-				// Handle this case appropriately, such as returning a default value or throwing an exception
-				throw new InvalidOperationException("sumOfPossibleFrequencies must be greater than 0.");
-			}
+			Coordinates test = new Coordinates(this.Coordinates.X, this.Coordinates.Y);
+			if (sumOfPossibleFrequencies == 0) return -1;
+			// {
+			// 	// Handle this case appropriately, such as returning a default value or throwing an exception
+			// 	throw new InvalidOperationException("sumOfPossibleFrequencies must be greater than 0.");
+			// }
 
 			int randomNumToChooseFromPossible = WFCGrid.Random.Next(0, sumOfPossibleFrequencies);
 			for(int i = 0; i < Options.Length; i++){
@@ -75,8 +81,12 @@ namespace hamsterbyte.WFC{
 
 
 		public int Collapse(){
+			
 			int weightedRandomIndex = WeightedRandomIndex();
 			TileIndex = weightedRandomIndex;
+			if(this.Coordinates.Y == 0){
+				GD.Print($"Cell({this.Coordinates.X},{this.Coordinates.Y}) collapsed as tile index { TileIndex}");
+			}
 			Collapsed = true;
 			for(int i = 0; i < Options.Length; i++){
 				Options[i] = i == TileIndex;
