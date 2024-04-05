@@ -27,12 +27,35 @@ namespace hamsterbyte.WFC{
 			sumOfPossibleFrequencies -= rawFrequencies[i];
 			sumOfPossibleFrequencyLogFrequencies -= logFrequencies[i];
 		}
+		// public void RemoveOption(int i)
+		// {
+		// 	GD.Print($" Cell{this.Coordinates.X},{this.Coordinates.Y} removed option{i}");
+		// 	// Check if the operation would result in a negative value
+		// 	if (sumOfPossibleFrequencies >= rawFrequencies[i] && sumOfPossibleFrequencyLogFrequencies >= logFrequencies[i])
+		// 	{
+		// 		Options[i] = false;
+		// 		sumOfPossibleFrequencies -= rawFrequencies[i];
+		// 		sumOfPossibleFrequencyLogFrequencies -= logFrequencies[i];
+				
+		// 	}
+		// 	else
+		// 	{
+		// 		// Handle this case appropriately, such as throwing an exception or logging a message
+		// 		throw new InvalidOperationException("Removing this option would result in negative values.");
+		// 	}
+		// }
 
 		public double Entropy => Math.Log2(sumOfPossibleFrequencies) - sumOfPossibleFrequencyLogFrequencies/sumOfPossibleFrequencies + entropyNoise;
 
 
 		private int WeightedRandomIndex(){
 			int pointer = 0;
+			if (sumOfPossibleFrequencies <= 0)
+			{
+				// Handle this case appropriately, such as returning a default value or throwing an exception
+				throw new InvalidOperationException("sumOfPossibleFrequencies must be greater than 0.");
+			}
+
 			int randomNumToChooseFromPossible = WFCGrid.Random.Next(0, sumOfPossibleFrequencies);
 			for(int i = 0; i < Options.Length; i++){
 				if(!Options[i]) continue;

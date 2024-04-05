@@ -22,6 +22,25 @@
 		public void updateBorderCellList(BorderCellUpdate _borCellUpdate){
 			bCellUpdates.Add(_borCellUpdate);
 		}
+		public void ProcessBorderCellUpdates(){
+			if (bCellUpdates.Count == 0) return;
+			GD.Print($"region({parentRegion.regionIndex.X},{parentRegion.regionIndex.Y}) is beginning to ProcessBCells");
+			foreach (var update in bCellUpdates)
+			{
+				// Access the cell at the specified coordinates
+        		var currentCell = cells[update.X, update.Y];
+				 foreach (var option in update.OptionsRemovedList)
+					{
+						currentCell.RemoveOption(option);
+					}
+					entropyHeap.Push(new EntropyCoordinates(){
+						Coordinates = currentCell.Coordinates,
+						Entropy = currentCell.Entropy
+					});
+				// Sample functionality: Print the X, Y, and size of OptionsRemovedList
+				GD.Print($"Processing update for cell ({update.X}, {update.Y}) with {update.OptionsRemovedList.Count} options removed");
+			}
+		}
 		private EntropyCoordinates Observe(){
 			
 			while(!entropyHeap.IsEmpty){
@@ -91,7 +110,7 @@
 						//get list of region it needs to go to
 						
 						//currentCell = parentRegion.getCellFromRegionManager(cellType, current.X, current.Y);
-						currentCell = new WFCCell(new Coordinates(-1,-1), new int [0]);//dummy cell
+						currentCell = new WFCCell(new Coordinates(-1,-1), rawFrequencies);//dummy cell
 						GD.Print($"region {parentRegion.regionIndex} requested a cell from region {parentRegion.lowerNeighbor}");
 						GD.Print($"Original {update.Coordinates.X},{update.Coordinates.Y} needed cell {currentCell.Coordinates.X},{currentCell.Coordinates.Y}");
 					}
@@ -102,7 +121,6 @@
 
 					for(int o = 0; o < adjacencyRules.GetLength(2); o++){
 						if(adjacencyRules[update.TileIndex, d, o] == 0 && currentCell.Options[o]){
-							currentCell.RemoveOption(o);
 							if (borrowed){
 									borCellUpdate.OptionsRemovedList.Add(o); //create a list that will be passed to foreign cells grid,
 															// with each reset, the list will be iterated and all cell options updated
@@ -139,10 +157,13 @@
 		}
 		public void TryCollapse(bool _wrap = true, int _maxAttempts = 100){
 				Reset(true);
-				
+				if(parentRegion.regionIndex.Y == 1){
+					//stop lets trace
+				}
 				Busy = true;
 				Stopwatch timer = Stopwatch.StartNew();
 				for(int i  = 0; i < _maxAttempts; i++){
+					ProcessBorderCellUpdates();
 					pushes = 0;
 					pops = 0;
 					pushPopHistory = " ";

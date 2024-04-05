@@ -84,7 +84,7 @@ namespace hamsterbyte.WFC{
 		public WFCCell(Coordinates _coordinates, int[] _frequencies){
 			Coordinates = _coordinates;
 			//if coords are on borer call appropriate function
-			DetermineBorderCells();
+			//DetermineBorderCells();
 			rawFrequencies = _frequencies;
 			logFrequencies = new double[rawFrequencies.Length];
 			Options = new bool[rawFrequencies.Length];
