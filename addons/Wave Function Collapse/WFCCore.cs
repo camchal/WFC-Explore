@@ -38,6 +38,7 @@ namespace hamsterbyte.WFC{
 		public int Y;
 		public List<int> OptionsRemovedList;
 		public int determiningTileIndex;
+		public int sentIndexesRemaining;
 	}
 
 	/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////

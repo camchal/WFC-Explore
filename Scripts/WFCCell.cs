@@ -1,7 +1,7 @@
 namespace hamsterbyte.WFC{
 	using System;
-    using System.Collections.Generic;
-    using System.Linq;
+	using System.Collections.Generic;
+	using System.Linq;
 	using System.Runtime.InteropServices;
 	using Godot;
 
@@ -76,7 +76,7 @@ namespace hamsterbyte.WFC{
 		//used in constructor
 		public void DetermineBorderCells(){
 			upBorCell= Coordinates.X == 0;
-    		leftBorCell = Coordinates.Y == 0;
+			leftBorCell = Coordinates.Y == 0;
 		}
 
 
@@ -85,7 +85,7 @@ namespace hamsterbyte.WFC{
 			int weightedRandomIndex = WeightedRandomIndex();
 			TileIndex = weightedRandomIndex;
 			if(this.Coordinates.Y == 0){
-				GD.Print($"Cell({this.Coordinates.X},{this.Coordinates.Y}) collapsed as tile index { TileIndex}");
+				//GD.Print($"Cell({this.Coordinates.X},{this.Coordinates.Y}) collapsed as tile index { TileIndex}");
 			}
 			Collapsed = true;
 			for(int i = 0; i < Options.Length; i++){
