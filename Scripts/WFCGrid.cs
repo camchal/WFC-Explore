@@ -169,11 +169,13 @@
 							}
 						GD.Print($"WFCGrid: cell ({borCellUpdate.X}, {borCellUpdate.Y}):  remaining indexes:{notRemovedIndexes}");
 						
-						borCellUpdate.sentIndexesRemaining = notRemovedIndexes.Length; //this is wrong
+						borCellUpdate.sentIndexesRemaining = notRemovedIndexes.ToString()
+                                                    .Split(new[] { ' ', '{', '}', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                                    .Length;
 						parentRegion.SendBorderCellUpdate(cellType,borCellUpdate);
 					}else{
 						if (currentCell.Entropy < -100 && currentCell.Entropy > 100){
-							//stop
+							throw new Exception("Entropy value out of range.");
 						}
 
 						entropyHeap.Push(new EntropyCoordinates(){

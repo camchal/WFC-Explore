@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using hamsterbyte.WFC;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 public partial class Test : TileMap{
 	public event Action<WFCRegion[,],Coordinates> AllRegionsComplete;
@@ -58,10 +59,15 @@ public partial class Test : TileMap{
 				WFCGrid grid = regions[i,j].GetGrid();
 				GD.Print($"region ({regions[i,j].regionIndex.X},{regions[i,j].regionIndex.Y}) is beginning tilemap population");
 				//offset the animation coordinates
-				// Process animation coordinates  
+				// Process animation coordinates 
+				Vector2I tempAnimationCoord; 
 				while (grid.AnimationCoordinates.Count > 0)
 				{	
-					CallDeferred("SetNextCell", grid.AnimationCoordinates.Dequeue().AsVector2I, i, j);
+					tempAnimationCoord = grid.AnimationCoordinates.Dequeue().AsVector2I;
+					if(j == 1 && tempAnimationCoord.Y == 0){
+						int tileIndex = grid[tempAnimationCoord.X, tempAnimationCoord.Y].TileIndex;
+					}
+					CallDeferred("SetNextCell", tempAnimationCoord, i, j);
 					await Task.Delay(1);
 				}
 			}
@@ -82,8 +88,10 @@ public partial class Test : TileMap{
 		
 		c.X += regionOffset.X * j;
 		c.Y += regionOffset.Y * i;
+		
 
 		SetCell(0, c, 0, source.GetTileId(tileIndex));
+		//SetCell(0, c, 0, source.GetTileId(5));
 	}
 
 	private void ClearTilemap(){
