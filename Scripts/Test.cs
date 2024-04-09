@@ -66,6 +66,7 @@ public partial class Test : TileMap{
 					tempAnimationCoord = grid.AnimationCoordinates.Dequeue().AsVector2I;
 					if(j == 1 && tempAnimationCoord.Y == 0){
 						int tileIndex = grid[tempAnimationCoord.X, tempAnimationCoord.Y].TileIndex;
+
 					}
 					CallDeferred("SetNextCell", tempAnimationCoord, i, j);
 					await Task.Delay(1);
@@ -80,9 +81,15 @@ public partial class Test : TileMap{
 		WFCGrid grid = regionManager.GetRegion(tempIndex).GetGrid(); // Assuming GetGrid() method in WFCRegion
 		
 		int tileIndex = grid[c.X, c.Y].TileIndex;
-		// if(c.Y == 0){
-		// 	GD.Print($"Cell({c.X},{c.Y}) set its tile as tile: {tileIndex}");
-		// }
+		if (c.X == 0 && c.Y == 0)
+			{
+				GD.Print($"0,0 tileindex: {tileIndex}");
+				GD.Print("Options:");
+				foreach (bool option in grid[c.X, c.Y].Options)
+				{
+					GD.Print(option);
+				}
+			}
 		if (tileIndex == -1) return; // Assuming -1 indicates no tile
 		Offset regionOffset = regionManager.GetRegion(tempIndex).GetOffset();
 		

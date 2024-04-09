@@ -30,7 +30,7 @@
 				// Access the cell at the specified coordinates
 				var currentCell = cells[update.X, update.Y];
 
-			GD.Print($" WFCGrid: Processing update for cell ({update.X}, {update.Y}) with {update.OptionsRemovedList.Count} options removed");
+			//GD.Print($" WFCGrid: Processing update for cell ({update.X}, {update.Y}) with {update.OptionsRemovedList.Count} options removed");
 				 foreach (var option in update.OptionsRemovedList)
 					{
 						
@@ -109,6 +109,7 @@
 					cellType = 'u'; //unchanged
 					Coordinates tempCurrent = new Coordinates();
 					Coordinates current = cardinals[d] + update.Coordinates;
+					List<int> tempList = new List<int>();
 					tempCurrent = current;
 					if (_wrap){
 						if(current.X < 0 || current.Y < 0) continue;//SKIP CELLS TO THE LEFT and UP , THEY ARE ALREADY GENERATED
@@ -148,8 +149,12 @@
 															// with each reset, the list will be iterated and all cell options updated
 								}else{
 									currentCell.RemoveOption(o);
+									tempList.Add(o);
 								}
 						}
+					}
+					if(current.Y == 0){
+						GD.Print($"BorderCell ({current.X},{current.Y}) has been modifed. Indexes: {string.Join(", ", tempList)} were removed)");
 					}
 
 	
@@ -167,11 +172,12 @@
 									notRemovedIndexes.Append(i + " ");
 								}
 							}
+							if(borCellUpdate.X == 0 && borCellUpdate.Y ==0){
 						GD.Print($"WFCGrid: cell ({borCellUpdate.X}, {borCellUpdate.Y}):  remaining indexes:{notRemovedIndexes}");
-						
+					}
 						borCellUpdate.sentIndexesRemaining = notRemovedIndexes.ToString()
-                                                    .Split(new[] { ' ', '{', '}', ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                                    .Length;
+													.Split(new[] { ' ', '{', '}', ',' }, StringSplitOptions.RemoveEmptyEntries)
+													.Length;
 						parentRegion.SendBorderCellUpdate(cellType,borCellUpdate);
 					}else{
 						if (currentCell.Entropy < -100 && currentCell.Entropy > 100){
