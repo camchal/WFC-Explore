@@ -12,9 +12,7 @@
 	public partial class WFCGrid{
 
 		public int numattempt = 0;
-		public int pushes;
-		public int pops;
-		public string pushPopHistory;
+	
 		
 		public WFCCell getCell(int row, int col){
 			return cells[row,col];
@@ -64,11 +62,34 @@
 				
 			}
 		}
+		public void AppendToCandidateList(BorderCellUpdate borCellUpdate, char cellType)
+			{
+				if (cellType == 'l')
+				{
+					lowerNeighborbCellUpdatesCandidateList.Add(borCellUpdate);
+				}
+				else if (cellType == 'r')
+				{
+					rightNeighborbCellUpdatesCandidateList.Add(borCellUpdate);
+				}
+			}
+		public void SendUpdatesToParentRegion()
+		{
+			foreach (var update in rightNeighborbCellUpdatesCandidateList)
+			{
+				parentRegion.SendBorderCellUpdate('r', update);
+			}
+
+			foreach (var update in lowerNeighborbCellUpdatesCandidateList)
+			{
+				parentRegion.SendBorderCellUpdate('l', update);
+			}
+		}
 		private EntropyCoordinates Observe(){
 			
 			while(!entropyHeap.IsEmpty){
 				EntropyCoordinates coords = entropyHeap.Pop();
-				pops++;
+				
 				if(!cells[coords.Coordinates.X, coords.Coordinates.Y].Collapsed){ 
 					return coords;}
 			}
@@ -132,6 +153,9 @@
 					else//its borrowed from another region
 					{
 						borCellUpdate.X = current.X; borCellUpdate.Y = current.Y;
+						if(borCellUpdate.X == 0 && borCellUpdate.Y ==0 && cellType == 'r'){
+							//looking at 0,0 for region to the right 
+						}
 						borCellUpdate.OptionsRemovedList = new List<int>();
 						borCellUpdate.determiningTileIndex = update.TileIndex;
 						borrowed = true;
@@ -153,10 +177,6 @@
 								}
 						}
 					}
-					if(current.Y == 0){
-						GD.Print($"BorderCell ({current.X},{current.Y}) has been modifed. Indexes: {string.Join(", ", tempList)} were removed)");
-					}
-
 	
 					if(entropyHeap.isHeapFull()){
 						entropyHeap = new EntropyHeap(Width * Height);
@@ -173,12 +193,13 @@
 								}
 							}
 							if(borCellUpdate.X == 0 && borCellUpdate.Y ==0){
-						GD.Print($"WFCGrid: cell ({borCellUpdate.X}, {borCellUpdate.Y}):  remaining indexes:{notRemovedIndexes}");
+						GD.Print($"WFCGrid: {cellType} cell ({borCellUpdate.X}, {borCellUpdate.Y}):  remaining indexes:{notRemovedIndexes}");
 					}
 						borCellUpdate.sentIndexesRemaining = notRemovedIndexes.ToString()
 													.Split(new[] { ' ', '{', '}', ',' }, StringSplitOptions.RemoveEmptyEntries)
 													.Length;
-						parentRegion.SendBorderCellUpdate(cellType,borCellUpdate);
+						
+						AppendToCandidateList(borCellUpdate, cellType);
 					}else{
 						if (currentCell.Entropy < -100 && currentCell.Entropy > 100){
 							throw new Exception("Entropy value out of range.");
@@ -191,8 +212,7 @@
 					}
 				
 
-					pushes++;
-					pushPopHistory += "U";
+					
 				}
 			}
 		}
@@ -210,12 +230,12 @@
 				Stopwatch timer = Stopwatch.StartNew();
 				for(int i  = 0; i < _maxAttempts; i++){
 					ProcessBorderCellUpdates();
-					pushes = 0;
-					pops = 0;
-					pushPopHistory = " ";
-					currentAttempt++;
-					//GD.Print($"region ({parentRegion.regionIndex.X}, {parentRegion.regionIndex.Y}) has begun a generation attempt");
+					//reinitialize my candidate lists
+					rightNeighborbCellUpdatesCandidateList = new List<BorderCellUpdate>();
+					lowerNeighborbCellUpdatesCandidateList = new List<BorderCellUpdate>();
 					
+					currentAttempt++;
+
 					if(entropyHeap.getSize() != 0){
 						GD.Print("entropy heap isnt empty before new attempt ");
 					}
@@ -225,8 +245,7 @@
 						Coordinates = cell.Coordinates,
 						Entropy = cell.Entropy
 					});
-					pushes++;
-					pushPopHistory += "U";
+				
 
 					while (remainingUncollapsedCells > 0){
 						EntropyCoordinates e = Observe();
@@ -247,6 +266,8 @@
 					} else break;
 					
 				}
+				SendUpdatesToParentRegion(); //send borderUpdatesto neighbor regions (if region DNE - does nothing)
+
 				timer.Stop();
 				WFCResult result = new(){
 					Grid = this,

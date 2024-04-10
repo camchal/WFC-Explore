@@ -125,7 +125,8 @@ namespace hamsterbyte.WFC{
 		private readonly Stack<RemovalUpdate> removalUpdates;
 		private readonly bool suppressNotifications;
 		public List<BorderCellUpdate> bCellUpdates; //list of cells this grid needs to update each iteration
-
+		public List<BorderCellUpdate> rightNeighborbCellUpdatesCandidateList;
+		public List<BorderCellUpdate> lowerNeighborbCellUpdatesCandidateList;
 		#endregion
 
 		#region DIMENSIONS

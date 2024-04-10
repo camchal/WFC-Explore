@@ -81,15 +81,15 @@ public partial class Test : TileMap{
 		WFCGrid grid = regionManager.GetRegion(tempIndex).GetGrid(); // Assuming GetGrid() method in WFCRegion
 		
 		int tileIndex = grid[c.X, c.Y].TileIndex;
-		if (c.X == 0 && c.Y == 0)
-			{
-				GD.Print($"0,0 tileindex: {tileIndex}");
-				GD.Print("Options:");
-				foreach (bool option in grid[c.X, c.Y].Options)
-				{
-					GD.Print(option);
-				}
-			}
+		// if (c.X == 0 && c.Y == 0)
+		// 	{
+		// 		GD.Print($"0,0 tileindex: {tileIndex}");
+		// 		GD.Print("Options:");
+		// 		foreach (bool option in grid[c.X, c.Y].Options)
+		// 		{
+		// 			GD.Print(option);
+		// 		}
+		// 	}
 		if (tileIndex == -1) return; // Assuming -1 indicates no tile
 		Offset regionOffset = regionManager.GetRegion(tempIndex).GetOffset();
 		
